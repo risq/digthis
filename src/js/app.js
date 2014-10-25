@@ -1,23 +1,47 @@
-var app = (function () {
+var app = (function() {
 
     var apiKey = 'ASJCKIVQOBWZNXULY';
     var curSong = null;
     var sessionId = null;
+    var maxReq = 15;
+    var playlistIDs = [];
 
-    function init () {
-        jQuery.ajaxSettings.traditional = true; 
-        getPlaylist({
-            fromYear: 1990,
-            toYear: 1999,
-            results: 64
+    function init() {
+        jQuery.ajaxSettings.traditional = true;
+        
+        getPlaylist('High Tone');
+    }
+
+    function getPlaylist(artist) {
+        playlistIDs = [];
+        var args = {
+            name: artist
+        };
+        callApi('artist/similar', args, null, function(error, data) {
+            if (!error) {
+                artists = $.map(data.artists, function(item) {
+                    return item.name;
+                });
+                artists.unshift(artist);
+                requestPlaylistPart({
+                    fromYear: 1990,
+                    toYear: 1999,
+                    results: 48,
+                    artists: artists,
+                    ids: []
+                });
+            }
+            else {
+                console.log('error');
+            }
         });
     }
 
     function callApi(action, args, options, done, doneFormatting) {
         var defaults = {
-            'api_key' : apiKey,
+            'api_key': apiKey,
         };
-        var url = 'http://developer.echonest.com/api/v4/' + action;    
+        var url = 'http://developer.echonest.com/api/v4/' + action;
         args = $.extend({}, defaults, args);
         $.getJSON(url, args,
             function(data) {
@@ -33,59 +57,74 @@ var app = (function () {
         );
     }
 
-    function getPlaylist(options, playlist) {
+    function requestPlaylistPart(options, playlist, reqCount) {
+        reqCount = reqCount ? reqCount : 0;
+        var currentArtist = options.artists[reqCount] ? options.artists[reqCount] : options.artists[0];
+        console.log(currentArtist);
         var args = {
-            'genre': 'hip hop',
-            'results': 100,
-            'bucket': [ 'id:7digital-US', 'id:deezer', 'tracks', 'audio_summary'], 
-            'type':'genre-radio',
-            'adventurousness': 0.8
+            // 'genre': 'hip hop',
+            'results': 50,
+            'artist': currentArtist,
+            'bucket': ['id:deezer', 'tracks'],
+            'type': 'artist-radio',
+            'adventurousness': 1,
+            'variety': 1,
+            'distribution': 'wandering',
         };
-        callApi('playlist/static', args, options, onPlaylistGet, function(songs) {
-            if (playlist) {
-                playlist = playlist.concat(songs);
-            }
-            else {
-                playlist = songs;
-            }
 
-            if (playlist.length < options.results) {
-                getPlaylist(options, playlist);
-            }
-            else {
-                playlist = playlist.slice(0, options.results);
-                cratedigger.loadRecords(playlist);
-            }
-
-            console.log(playlist.length);
-        });
+        if (reqCount <= maxReq) {
+            reqCount = reqCount + 1;
+            callApi('playlist/static', args, options, onPlaylistPartGet, function(songs) {
+                onPlaylistPartFormatted(options, songs, playlist, reqCount);
+            });
+        }
     }
 
-    function onPlaylistGet(error, response, options, doneFormatting) {
+    function onPlaylistPartFormatted(options, songs, playlist, reqCount) {
+        if (playlist) {
+            playlist = playlist.concat(songs);
+        } else {
+            playlist = songs;
+        }
+
+        if (playlist.length < options.results && reqCount <= maxReq) {
+            requestPlaylistPart(options, playlist, reqCount);
+        } else {
+            playlist = playlist.slice(0, options.results);
+            callUrl302(playlist, function(error, newPlaylist) {
+                if(!error) {
+                    newPlaylist = shuffle(newPlaylist);
+                    cratedigger.loadRecords(newPlaylist);
+                }
+            });
+        }
+    }
+
+    function onPlaylistPartGet(error, response, options, doneFormatting) {
         if (!error) {
             var songs = $.map(response.songs, function(song) {
                 return formatResponseSong(song, options);
             });
-            $('#cover').attr('src', songs[0].cover);
             doneFormatting(songs);
         }
     }
 
     function formatResponseSong(songData, options) {
         tracksData = getDataFromTracks(songData.tracks, options);
-        if (tracksData) {
-            //console.log(songData);
-            
+
+        if (tracksData && $.inArray(songData.id, playlistIDs) === -1) {
+            console.log(playlistIDs.length);
             var song = {
                 title: songData.title,
                 artist: songData.artist_name,
                 cover: tracksData.cover,
                 year: tracksData.year,
+                id: songData.id,
                 hasSleeve: false
             };
+            playlistIDs.push(songData.id);
             return song;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -97,34 +136,59 @@ var app = (function () {
             year: null
         };
         if (length) {
-            for (var i = 0; (i < length && (!data.cover || !data.year)); i++) {
-                if (tracks[i].catalog == 'deezer' && !data.year && tracks[i].album_date) {
-                    data.year = tracks[i].album_date.substring(0,4);
-                }
-                else if (tracks[i].catalog == '7digital-US' && !data.cover && tracks[i].release_image) {
-                    data.cover = tracks[i].release_image;
+            for (var i = 0; i < length; i++) {
+                if (tracks[i].catalog == 'deezer' && tracks[i].album_date) {
+                    data.year = tracks[i].album_date.substring(0, 4);
+                    var id = tracks[i].foreign_release_id.split(':')[2];
+                    data.cover = 'http://api.deezer.com/album/' + id + '/image?size=big';
+                    
+                    break;
                 }
             }
             if (data.cover && data.year) {
-                if(options && options.fromYear && data.year < options.fromYear) {
-                    return null;
-                }
-                if(options && options.toYear && data.year > options.toYear) {
-                    return null;
-                }
+                // if (options && options.fromYear && data.year < options.fromYear) {
+                //     return null;
+                // }
+                // if (options && options.toYear && data.year > options.toYear) {
+                //     return null;
+                // }
                 return data;
-            }
-            else {
+            } else {
                 return null;
             }
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     function formatCoverUrl(url) {
-        return url.substring(0, url.length-7) + '500.jpg';
+        return url.substring(0, url.length - 7) + '500.jpg';
+    }
+
+    function callUrl302(data, done) {
+        var url = 'https://url302.herokuapp.com/';
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(data),
+            success: function(data) {
+                done(false, data);
+            },
+            error: function() {
+                done(true);
+            }
+        });
+    }
+
+    //+ Jonas Raoni Soares Silva
+    //@ http://jsfromhell.com/array/shuffle [rev. #1]
+    function shuffle(v){
+        for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
+        return v;
     }
 
     return {
@@ -139,15 +203,18 @@ var app = (function () {
 $(function() {
     cratedigger.init({
         elements: {
-            rootContainerId     : 'cratedigger',
-            canvasContainerId   : 'cratedigger-canvas',
-            loadingContainerId  : 'cratedigger-loading',
-            infosContainerId    : 'cratedigger-infos',
-            titleContainerId    : 'cratedigger-record-title',
-            artistContainerId   : 'cratedigger-record-artist',
-            coverContainerId    : 'cratedigger-record-cover'
+            rootContainerId: 'cratedigger',
+            canvasContainerId: 'cratedigger-canvas',
+            loadingContainerId: 'cratedigger-loading',
+            infosContainerId: 'cratedigger-infos',
+            titleContainerId: 'cratedigger-record-title',
+            artistContainerId: 'cratedigger-record-artist',
+            coverContainerId: 'cratedigger-record-cover'
         }
     });
     app.init();
-});
 
+    $.get('https://api.deezer.com/album/669119/image', null, function() {
+        console.log('OK');
+    });
+});

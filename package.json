@@ -31,5 +31,8 @@
     "gulp-uglify": "^1.0.1",
     "multipipe": "^0.1.1",
     "run-sequence": "^1.0.1"
+  },
+  "devDependencies": {
+    "gulp-gh-pages": "^0.4.0"
   }
 }

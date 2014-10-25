@@ -94,6 +94,11 @@ gulp.task('watch', function() {
   console.log('watching directory:' + paths.less.join(', '));
 });
 
+gulp.task('deploy', function () {
+    return gulp.src('./dist/**/*')
+        .pipe(plugins.ghPages());
+});
+
 gulp.task('dev', ['less-dev']);
 
 gulp.task('build', ['clean', 'less', 'js', 'font', 'img', 'html', 'bower-install']);
