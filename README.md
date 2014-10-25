@@ -1,2 +1,2 @@
-youdig
+you-dig
 ======
