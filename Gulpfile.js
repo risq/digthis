@@ -28,6 +28,15 @@ gulp.task('connect', function() {
         .pipe(plugins.open('', {url: 'http://localhost:' + port}));
 });
 
+gulp.task('connect-dist', function() {
+    plugins.connect.server({
+        root: 'dist',
+        port: port
+    });
+    gulp.src("dist/index.html")
+        .pipe(plugins.open('', {url: 'http://localhost:' + port}));
+});
+
 gulp.task('clean', function() {
     del.sync(paths.dist.css);
     del.sync(paths.dist.js);
