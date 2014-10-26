@@ -15,7 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "cratedigger.js": "~0.0.1",
+    "cratedigger.js": "master",
     "modernizr": "~2.8.3",
     "normalize.css": "~3.0.2"
   }

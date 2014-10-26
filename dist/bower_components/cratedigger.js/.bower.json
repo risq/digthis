@@ -1,6 +1,5 @@
 {
   "name": "cratedigger.js",
-  "version": "0.0.1",
   "homepage": "https://github.com/risq/cratedigger.js",
   "authors": [
     "risq <valentin.ledrapier@gmail.com>"
@@ -22,17 +21,17 @@
   "dependencies": {
     "modernizr": "~2.8.2",
     "tween.js": "https://github.com/sole/tween.js.git",
-    "stats.js": "git@github.com:mrdoob/stats.js.git",
+    "stats.js": "r12",
     "classie": "~1.0.1",
-    "three.js": "*"
+    "threejs": "r69"
   },
-  "_release": "0.0.1",
+  "_release": "e6054c0bf6",
   "_resolution": {
-    "type": "version",
-    "tag": "0.0.1",
-    "commit": "de07e9646e9a9f20d80d2c25be801ff0302e973b"
+    "type": "branch",
+    "branch": "master",
+    "commit": "e6054c0bf6dfd418000ce9d0b296b4dfe76ef0cc"
   },
   "_source": "git://github.com/risq/cratedigger.js.git",
-  "_target": "~0.0.1",
+  "_target": "master",
   "_originalSource": "cratedigger.js"
 }

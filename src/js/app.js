@@ -9,7 +9,7 @@ var app = (function() {
     function init() {
         jQuery.ajaxSettings.traditional = true;
         
-        getPlaylist('High Tone');
+        getPlaylist('The Roots');
     }
 
     function getPlaylist(artist) {
@@ -27,8 +27,7 @@ var app = (function() {
                     fromYear: 1990,
                     toYear: 1999,
                     results: 48,
-                    artists: artists,
-                    ids: []
+                    artists: artists
                 });
             }
             else {
@@ -213,8 +212,4 @@ $(function() {
         }
     });
     app.init();
-
-    $.get('https://api.deezer.com/album/669119/image', null, function() {
-        console.log('OK');
-    });
 });
