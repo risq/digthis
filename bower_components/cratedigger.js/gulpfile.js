@@ -35,14 +35,15 @@ gulp.task('demo', function() {
 
 // Scripts
 gulp.task('build-scripts', function() {
-  return gulp.src('src/scripts/**/*.js')
+  return gulp.src(['!src/scripts/threejs_modules.min.js', 'src/scripts/*.js'])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(concat('cratedigger.js'))
     .pipe(gulp.dest('dist/scripts'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
-    .pipe(gulp.dest('dist/scripts'));
+    .pipe(gulp.dest('dist/scripts'))
+    .pipe(gulp.dest('demo/scripts'));
 });
 
 // Styles
@@ -53,12 +54,24 @@ gulp.task('build-styles', function() {
     .pipe(gulp.dest('dist/styles'))
     .pipe(cssmin())
     .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('dist/styles'));
+    .pipe(gulp.dest('dist/styles'))
+    .pipe(gulp.dest('demo/styles'));
 });
 
 gulp.task('build-imgs', function() {
     return gulp.src('src/img/*')
-        .pipe(gulp.dest('dist/img'));
+        .pipe(gulp.dest('dist/img'))
+        .pipe(gulp.dest('demo/img'));
+});
+
+// Three.js modules
+gulp.task('build-threejs-modules', function() {
+  return gulp.src('src/scripts/threejs_modules/*.js')
+    .pipe(concat('threejs_modules.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('src/scripts'))
+    .pipe(gulp.dest('dist/scripts'))
+    .pipe(gulp.dest('demo/scripts'));
 });
 
 // Clean
@@ -67,31 +80,25 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build', function () {
-    runSequence('clean', ['build-scripts', 'build-styles', 'build-imgs']);
+    runSequence('clean', ['build-scripts', 'build-styles', 'build-imgs', 'build-threejs-modules']);
 });
 
 gulp.task('build-demo', function () {
-    runSequence('clean', ['build-scripts', 'build-styles'], 'move-demo-files', 'bower-install-demo');
+    runSequence('build', 'move-demo-files', 'bower-install-demo');
 });
 
 gulp.task('move-demo-files', function () {
-    gulp.src('dist/styles/*.css')
-        .pipe(gulp.dest('demo/styles'));
-    gulp.src('dist/scripts/*.js')
-        .pipe(gulp.dest('demo/scripts'));
-    gulp.src('src/img/*')
-        .pipe(gulp.dest('demo/img'));
     gulp.src('src/*.js')
         .pipe(gulp.dest('demo/'));
 });
 
 gulp.task('deploy-demo', function () {
-    return gulp.src('./demo/**/*')
+    return gulp.src('demo/**/*')
         .pipe(ghPages());
 });
 
 gulp.task('deploy', function () {
-    runSequence('clean', 'build', 'build-demo', 'deploy-demo');
+    runSequence('clean', 'build-demo', 'deploy-demo');
 });
 
 gulp.task('bower-install-demo', function () {
