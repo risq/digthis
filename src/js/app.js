@@ -231,7 +231,8 @@ var GUI = (function() {
     function searchInputKeypressHandler(e) {
         if (e.which == 13 && $searchInput.val() && $searchInput.val() !== '') {
             $searchInput.prop('disabled', true);
-            API.getPlaylistFromArtist($searchInput.val(), function() {
+            API.getPlaylistFromArtist($searchInput.val(), function(playlist) {
+                cratedigger.loadRecords(playlist);
                 setTimeout(function() {
                     $artistSearchContainer.fadeOut(1000);
                 }, 2000);
@@ -273,7 +274,7 @@ var DeezerPlayer = (function() {
     function init() {
         DZ.init({
             appId  : '146221',
-            channelUrl : 'http://developers.deezer.com/examples/channel.php',
+            channelUrl : 'http://risq.github.io/digthis/channel.html',
             player: {
                 // container : 'player',
                 // width: 400,
@@ -285,7 +286,13 @@ var DeezerPlayer = (function() {
     }
 
     function onPlayerLoaded() {
-
+        DZ.getLoginStatus(function(response) {
+            if (response.authResponse) {
+                console.log('Logged in !');
+            } else {
+                console.log('Not logged :(');
+            }
+        });
     }
 
     function playTrack(record) {
@@ -346,9 +353,9 @@ var App = (function() {
         GUI.init();
         DeezerPlayer.init();
 
-        API.getPlaylistFromArtist('the roots', function(playlist) {
-            cratedigger.loadRecords(playlist);
-        });
+        // API.getPlaylistFromArtist('the roots', function(playlist) {
+        //     cratedigger.loadRecords(playlist);
+        // });
     }
 
     return {

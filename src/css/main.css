@@ -63,7 +63,6 @@ input:disabled {
   height: 100%;
   width: 100%;
   display: table;
-  display: none;
 }
 #artist-search .input-container {
   width: 100%;
