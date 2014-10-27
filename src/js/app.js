@@ -8,6 +8,7 @@ var API = (function() {
     var sessionId = null;
     var maxReq = 15;
     var playlistIDs = [];
+    var playlistReleaseIDs = [];
 
     function init() {
         jQuery.ajaxSettings.traditional = true;
@@ -15,6 +16,7 @@ var API = (function() {
 
     function getPlaylistFromArtist(artist, done) {
         playlistIDs = [];
+        playlistReleaseIDs = [];
         var args = {
             name: artist
         };
@@ -63,16 +65,17 @@ var API = (function() {
     function requestPlaylistPart(options, playlist, reqCount, onPlaylistLoaded) {
         reqCount = reqCount ? reqCount : 0;
         var currentArtist = options.artists[reqCount] ? options.artists[reqCount] : options.artists[0];
+        var currentResults = reqCount === 0 ? 80 : 40;
+        var currentVariety = reqCount === 0 ? 0.4 : 0.8;
+        var currentDistrib = reqCount === 0 ? 'focused' : 'wandering';
         console.log(currentArtist);
         var args = {
-            // 'genre': 'hip hop',
-            'results': 40,
+            'results': currentResults,
             'artist': currentArtist,
             'bucket': ['id:deezer', 'tracks'],
             'type': 'artist-radio',
-            'adventurousness': 1,
-            'variety': 1,
-            'distribution': 'wandering',
+            'variety': currentVariety,
+            'distribution': 'focused',
         };
 
         if (reqCount <= maxReq) {
@@ -114,7 +117,7 @@ var API = (function() {
     function formatResponseSong(songData, options) {
         tracksData = getDataFromTracks(songData.tracks, options);
 
-        if (tracksData && $.inArray(songData.id, playlistIDs) === -1) {
+        if (tracksData && $.inArray(songData.id, playlistIDs) === -1 && $.inArray(tracksData.release_id, playlistReleaseIDs) === -1) {
             console.log(playlistIDs.length);
             var song = {
                 title: songData.title,
@@ -126,6 +129,7 @@ var API = (function() {
                 hasSleeve: false
             };
             playlistIDs.push(songData.id);
+            playlistReleaseIDs.push(tracksData.release_id);
             return song;
         } else {
             return null;
