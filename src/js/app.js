@@ -275,10 +275,10 @@ var DeezerPlayer = (function() {
             appId  : '146221',
             channelUrl : 'http://developers.deezer.com/examples/channel.php',
             player: {
-                container : 'player',
-                width: 400,
-                height: 80,
-                playlist: false,
+                // container : 'player',
+                // width: 400,
+                // height: 80,
+                // playlist: false,
                 onload: onPlayerLoaded
             }
         });

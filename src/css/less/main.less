@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-	background-color: #fff;
+	background-color: @white;
 	font-family: 'Montserrat', sans-serif;
 }
 
@@ -18,7 +18,7 @@ input {
 		border: none;
 		border-bottom: 2px solid rgba(255,255,255,0.2);
 		background-color: transparent;
-		color: #fff;
+		color: @white;
 		text-overflow: ellipsis;
 		font-weight: bold;
 		font-size: 80px;
@@ -58,7 +58,7 @@ input {
 }
 
 #cratedigger {
-	background-color: #111;
+	background-color: @black;
 }
 
 
@@ -66,7 +66,7 @@ input {
 
 	position: absolute;
 	z-index: 20;
-	background-color: #111;
+	background-color: @black;
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -102,7 +102,7 @@ input {
 	height: @bottomBarHeight;
 	width: 100%;
 	display: table;
-	color: #fff;
+	color: @white;
 	overflow: hidden;
 	transition: all 0.3s ease-in-out;
 	table-layout: fixed;
@@ -122,17 +122,53 @@ input {
 		cursor: pointer;
 
 		&:hover {
-			background-color: #fff;
-			color: #111;
+			background-color: @white;
+			color: @black;
 		}
 	}
 }
 
 .cratedigger-label,
 .cratedigger-label a {
-	color: #fff;
+	color: @white;
 	text-transform: uppercase;
 	font: 'Montserrat', sans-serif;
 	font-size: 24px;
 	text-decoration: none;
+}
+
+.track {
+	width: @rightColumnWidth;
+	height: 100%;
+	position: relative;
+}
+
+.track-header {
+	height: 110px;
+	background-color: @white;
+}
+
+.track-cover {
+	height: 262px;
+	background-color: @gray;
+}
+
+.track-controls {
+	height: 44px;
+	background-color: @white;
+}
+
+.track-buttons {
+	height: 112px;
+	background-color: @gray;
+}
+
+.tastes {
+	height: 180px;
+	background-color: @white;
+}
+
+.footer {
+	height: @bottomBarHeight;
+	background-color: @gray;
 }

@@ -5,7 +5,7 @@ body {
   overflow: hidden;
 }
 body {
-  background-color: #fff;
+  background-color: #e9eef2;
   font-family: 'Montserrat', sans-serif;
 }
 input {
@@ -15,7 +15,7 @@ input {
   border: none;
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   background-color: transparent;
-  color: #fff;
+  color: #e9eef2;
   text-overflow: ellipsis;
   font-weight: bold;
   font-size: 80px;
@@ -37,25 +37,25 @@ input:disabled {
   position: relative;
 }
 .main .main-inner {
-  margin-right: 400px;
+  margin-right: 325px;
   height: 100%;
   position: relative;
 }
 .right-column {
   position: fixed;
   height: 100%;
-  width: 400px;
+  width: 325px;
   right: 0;
   top: 0;
   bottom: 0;
 }
 #cratedigger {
-  background-color: #111;
+  background-color: #111111;
 }
 #artist-search {
   position: absolute;
   z-index: 20;
-  background-color: #111;
+  background-color: #111111;
   top: 0;
   right: 0;
   bottom: 0;
@@ -86,7 +86,7 @@ input:disabled {
   height: 60px;
   width: 100%;
   display: table;
-  color: #fff;
+  color: #e9eef2;
   overflow: hidden;
   -webkit-transition: all 0.3s ease-in-out;
           transition: all 0.3s ease-in-out;
@@ -107,14 +107,43 @@ input:disabled {
   cursor: pointer;
 }
 #bottom-bar .bottom-bar-item:hover {
-  background-color: #fff;
-  color: #111;
+  background-color: #e9eef2;
+  color: #111111;
 }
 .cratedigger-label,
 .cratedigger-label a {
-  color: #fff;
+  color: #e9eef2;
   text-transform: uppercase;
   font: 'Montserrat', sans-serif;
   font-size: 24px;
   text-decoration: none;
+}
+.track {
+  width: 325px;
+  height: 100%;
+  position: relative;
+}
+.track-header {
+  height: 110px;
+  background-color: #e9eef2;
+}
+.track-cover {
+  height: 262px;
+  background-color: #9fabb3;
+}
+.track-controls {
+  height: 44px;
+  background-color: #e9eef2;
+}
+.track-buttons {
+  height: 112px;
+  background-color: #9fabb3;
+}
+.tastes {
+  height: 180px;
+  background-color: #e9eef2;
+}
+.footer {
+  height: 60px;
+  background-color: #9fabb3;
 }
