@@ -56,6 +56,10 @@ gulp.task('less-dev', function() {
   gulp.src(paths.less)
     .pipe(plugins.concat('main.css'))
     .pipe(plugins.less())
+    .on('error', function (err) {
+        console.log('LESS ERROR : ' + err.message);
+        this.emit('end');
+    })
     .pipe(plugins.autoprefixer())
     .pipe(gulp.dest('./src/css/'));
 });

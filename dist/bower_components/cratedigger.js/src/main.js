@@ -13,10 +13,10 @@ cratedigger.init({
     }
 });
 
-cratedigger.loadRecords(data);
+cratedigger.loadRecords(data, true);
 
 document.addEventListener('click', function(e) {
-    if (e.target != cratedigger.canvas()) {
+    if (e.target != cratedigger.getCanvas()) {
         cratedigger.resetShownRecord();
     }
 }, false);

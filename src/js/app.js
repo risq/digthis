@@ -1,4 +1,7 @@
-var app = (function() {
+/*===========================
+=            API            =
+===========================*/
+var API = (function() {
 
     var apiKey = 'ASJCKIVQOBWZNXULY';
     var curSong = null;
@@ -8,11 +11,9 @@ var app = (function() {
 
     function init() {
         jQuery.ajaxSettings.traditional = true;
-        
-        getPlaylist('The Roots');
     }
 
-    function getPlaylist(artist) {
+    function getPlaylistFromArtist(artist, done) {
         playlistIDs = [];
         var args = {
             name: artist
@@ -28,9 +29,12 @@ var app = (function() {
                     toYear: 1999,
                     results: 48,
                     artists: artists
+                }, null, null, function(playlist) {
+                    newPlaylist = shuffle(playlist);
+
+                    done(playlist);
                 });
-            }
-            else {
+            } else {
                 console.log('error');
             }
         });
@@ -56,13 +60,13 @@ var app = (function() {
         );
     }
 
-    function requestPlaylistPart(options, playlist, reqCount) {
+    function requestPlaylistPart(options, playlist, reqCount, onPlaylistLoaded) {
         reqCount = reqCount ? reqCount : 0;
         var currentArtist = options.artists[reqCount] ? options.artists[reqCount] : options.artists[0];
         console.log(currentArtist);
         var args = {
             // 'genre': 'hip hop',
-            'results': 50,
+            'results': 40,
             'artist': currentArtist,
             'bucket': ['id:deezer', 'tracks'],
             'type': 'artist-radio',
@@ -74,12 +78,12 @@ var app = (function() {
         if (reqCount <= maxReq) {
             reqCount = reqCount + 1;
             callApi('playlist/static', args, options, onPlaylistPartGet, function(songs) {
-                onPlaylistPartFormatted(options, songs, playlist, reqCount);
+                onPlaylistPartFormatted(options, songs, playlist, reqCount, onPlaylistLoaded);
             });
         }
     }
 
-    function onPlaylistPartFormatted(options, songs, playlist, reqCount) {
+    function onPlaylistPartFormatted(options, songs, playlist, reqCount, playlistLoaded) {
         if (playlist) {
             playlist = playlist.concat(songs);
         } else {
@@ -87,13 +91,12 @@ var app = (function() {
         }
 
         if (playlist.length < options.results && reqCount <= maxReq) {
-            requestPlaylistPart(options, playlist, reqCount);
+            requestPlaylistPart(options, playlist, reqCount, playlistLoaded);
         } else {
             playlist = playlist.slice(0, options.results);
             callUrl302(playlist, function(error, newPlaylist) {
-                if(!error) {
-                    newPlaylist = shuffle(newPlaylist);
-                    cratedigger.loadRecords(newPlaylist);
+                if (!error) {
+                    playlistLoaded(newPlaylist);
                 }
             });
         }
@@ -118,7 +121,8 @@ var app = (function() {
                 artist: songData.artist_name,
                 cover: tracksData.cover,
                 year: tracksData.year,
-                id: songData.id,
+                deezer_id: tracksData.id,
+                deezer_releaseId: tracksData.release_id,
                 hasSleeve: false
             };
             playlistIDs.push(songData.id);
@@ -137,10 +141,10 @@ var app = (function() {
         if (length) {
             for (var i = 0; i < length; i++) {
                 if (tracks[i].catalog == 'deezer' && tracks[i].album_date) {
-                    data.year = tracks[i].album_date.substring(0, 4);
-                    var id = tracks[i].foreign_release_id.split(':')[2];
-                    data.cover = 'http://api.deezer.com/album/' + id + '/image?size=big';
-                    
+                    data.year       = tracks[i].album_date.substring(0, 4);
+                    data.id         = tracks[i].foreign_id.split(':')[2];
+                    data.release_id = tracks[i].foreign_release_id.split(':')[2];
+                    data.cover      = 'http://api.deezer.com/album/' + data.release_id + '/image?size=big';
                     break;
                 }
             }
@@ -185,14 +189,172 @@ var app = (function() {
 
     //+ Jonas Raoni Soares Silva
     //@ http://jsfromhell.com/array/shuffle [rev. #1]
-    function shuffle(v){
-        for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
+    function shuffle(v) {
+        for (var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
         return v;
+    }
+
+    return {
+        init: init,
+        getPlaylistFromArtist: getPlaylistFromArtist
+    };
+})();
+
+
+
+/*===========================
+=            GUI            =
+===========================*/
+
+var GUI = (function() {
+
+    var $searchInput,
+        $artistSearchContainer,
+        $bottomBar,
+        $listenButton;
+
+    function init() {
+        $searchInput = $('#artist-search-input');
+        $artistSearchContainer = $('#artist-search');
+        $bottomBar = $('#bottom-bar');
+        $listenButton = $('#cratedigger-record-listen');
+
+        initEventListeners();
+
+    }
+
+    function initEventListeners() {
+        $searchInput.keypress(searchInputKeypressHandler);
+        $listenButton.on('click', listenButtonClickHandler);
+    }
+
+    function searchInputKeypressHandler(e) {
+        if (e.which == 13 && $searchInput.val() && $searchInput.val() !== '') {
+            $searchInput.prop('disabled', true);
+            API.getPlaylistFromArtist($searchInput.val(), function() {
+                setTimeout(function() {
+                    $artistSearchContainer.fadeOut(1000);
+                }, 2000);
+            });
+        }
+    }
+
+    function listenButtonClickHandler(e) {
+        e.stopPropagation();
+        DeezerPlayer.playTrack(cratedigger.getSelectedRecord());
+        return false;
+    }
+
+    function openBottomBar() {
+    }
+
+    function closeBottomBar() {
+    }
+
+    return {
+        init: init,
+        openBottomBar: openBottomBar,
+        closeBottomBar: closeBottomBar
+    };
+
+})();
+
+
+
+
+/*====================================
+=            DeezerPlayer            =
+====================================*/
+
+var DeezerPlayer = (function() {
+
+    var player;
+
+    function init() {
+        DZ.init({
+            appId  : '146221',
+            channelUrl : 'http://developers.deezer.com/examples/channel.php',
+            player: {
+                container : 'player',
+                width: 400,
+                height: 80,
+                playlist: false,
+                onload: onPlayerLoaded
+            }
+        });
+    }
+
+    function onPlayerLoaded() {
+
+    }
+
+    function playTrack(record) {
+        console.log(record);
+        var id = record.data.deezer_id;
+        console.log('play id:', id);
+        DZ.player.playTracks([id]);
+    }
+
+    function login() {
+        DZ.login(function (response) {
+            if (response.authResponse) {
+                console.log('Welcome!  Fetching your information.... ');
+                DZ.api('/user/me', function (response) {
+                    console.log('Good to see you, ' + response.name + '.');
+                });
+                userToken = response.authResponse.accessToken;
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, { perms: 'email, manage_library' });
+    }
+
+    return {
+        init: init,
+        playTrack: playTrack
+    };
+
+})();
+
+
+/*===========================
+=            App            =
+===========================*/
+
+var App = (function() {
+
+    function init() {
+        cratedigger.init({
+            infoPanelOpened: function() {
+                GUI.openBottomBar();
+            },
+            infoPanelClosed: function() {
+                GUI.openBottomBar();   
+            },
+            elements: {
+                rootContainerId: 'cratedigger',
+                canvasContainerId: 'cratedigger-canvas',
+                loadingContainerId: 'cratedigger-loading',
+                infosContainerId: 'cratedigger-infos',
+                titleContainerId: 'cratedigger-record-title',
+                artistContainerId: 'cratedigger-record-artist',
+                coverContainerId: 'cratedigger-record-cover'
+            }
+        });
+
+        API.init();
+        GUI.init();
+        DeezerPlayer.init();
+
+        API.getPlaylistFromArtist('the roots', function(playlist) {
+            cratedigger.loadRecords(playlist);
+        });
     }
 
     return {
         init: init
     };
+
 })();
 
 
@@ -200,16 +362,7 @@ var app = (function() {
 
 
 $(function() {
-    cratedigger.init({
-        elements: {
-            rootContainerId: 'cratedigger',
-            canvasContainerId: 'cratedigger-canvas',
-            loadingContainerId: 'cratedigger-loading',
-            infosContainerId: 'cratedigger-infos',
-            titleContainerId: 'cratedigger-record-title',
-            artistContainerId: 'cratedigger-record-artist',
-            coverContainerId: 'cratedigger-record-cover'
-        }
-    });
-    app.init();
+    App.init();
 });
+
+//todo : cratedigger test raycast first touched
