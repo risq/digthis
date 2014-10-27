@@ -21,45 +21,60 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-
-    <div id="cratedigger">
-        <div id="cratedigger-canvas"></div>
-        <div id="cratedigger-loading"></div>
-        <div id="cratedigger-infos">
-            <div class="infos-container">
-                <div class="vertical-center">
-                    <div id="cratedigger-record-artist"></div>
-                    <div id="cratedigger-record-title"></div>
-                    <div id="cratedigger-record-cover"></div>
+    <div id="dz-root"></div>
+    <div class="main">
+        <div class="main-inner">
+            <div id="cratedigger">
+                <div id="cratedigger-canvas"></div>
+                <div id="cratedigger-loading"></div>
+                <div id="cratedigger-infos">
+                    <div class="infos-container">
+                        <div class="vertical-center">
+                            <div id="cratedigger-record-artist" class="cratedigger-label"></div>
+                            <div id="cratedigger-record-title"  class="cratedigger-label"></div>
+                            <div id="cratedigger-record-cover"  class="cratedigger-label"></div>
+                            <div class="cratedigger-label">
+                                <a id="cratedigger-record-listen" href="#">Listen</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bottom-bar">
+                <div class="bottom-bar-item">
+                    PREVIOUS
+                </div>
+                <div class="bottom-bar-item full-centered">
+                    SEE
+                </div>
+                <div class="bottom-bar-item full-centered">
+                    NEXT
                 </div>
             </div>
         </div>
+        <div class="right-column">
+            <div id="player" style="width:100%;" align="center"></div>
+        </div>
     </div>
+
+    
     <div id="artist-search">
         <div class="input-container">
             <input type="text" id="artist-search-input"></input>
         </div>
     </div>
-    <div id="bottom-bar">
-        <div class="bottom-bar-item">
-            PREVIOUS
-        </div>
-        <div class="bottom-bar-item full-centered">
-            SEE
-        </div>
-        <div class="bottom-bar-item full-centered">
-            NEXT
-        </div>
-    </div>
+
+    
 
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="bower_components/classie/classie.js"></script>
     <script src="bower_components/threejs/build/three.min.js"></script>
     <script src="bower_components/tween.js/build/tween.min.js"></script>
     <script src="bower_components/stats.js/build/stats.min.js"></script>
     <script src="bower_components/dat-gui/build/dat.gui.min.js"></script>
+
+    <script src="http://cdn-files.deezer.com/js/min/dz.js"></script>
 
     <script src="bower_components/cratedigger.js/dist/scripts/threejs_modules.min.js"></script>
 

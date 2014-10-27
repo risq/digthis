@@ -162,8 +162,8 @@
             postprocessing: true,
             blurAmount: 0.6,
             updateCanvasSizeOnWindowResize: false, //does not work with postprocessing enabled
-            infoPannelOpened: function() {},
-            infoPannelClosed: function() {},
+            infoPanelOpened: function() {},
+            infoPanelClosed: function() {},
             elements: {
                 rootContainerId: 'cratedigger',
                 canvasContainerId: 'cratedigger-canvas',
@@ -325,12 +325,12 @@
             .easing(TWEEN.Easing.Quartic.Out).start()
             .onComplete(done);
 
-            new TWEEN.Tween(camera.position)
-                .to({
-                    x: this.recordXPos + options.constants.cameraFocusPosition.x + 80,
-                    y: options.constants.cameraFocusPosition.y - 50,
-                }, options.constants.cameraMoveTime)
-                .easing(TWEEN.Easing.Quartic.Out).start();
+        new TWEEN.Tween(camera.position)
+            .to({
+                x: this.recordXPos + options.constants.cameraFocusPosition.x + 80,
+                y: options.constants.cameraFocusPosition.y - 50,
+            }, options.constants.cameraMoveTime)
+            .easing(TWEEN.Easing.Quartic.Out).start();
     };
 
     Record.prototype.flipBackRecord = function(done) {
@@ -408,8 +408,7 @@
             renderer.render(scene, camera, depthTarget);
             scene.overrideMaterial = null;
             composer.render();
-        }
-        else {
+        } else {
             renderer.render(scene, camera);
         }
     };
@@ -470,7 +469,7 @@
         records[selectedRecord].flipRecord(function() {
             infosPanelState = 'opened';
         });
-        infoPannelOpened();
+        options.infoPanelOpened();
         setTimeout(function() {
             fadeIn(infosContainerElement);
         }, 300);
@@ -482,7 +481,7 @@
             infosPanelState = 'closing';
             records[selectedRecord].flipBackRecord(function() {
                 infosPanelState = 'closed';
-                infoPannelClosed();
+                options.infoPanelClosed();
             });
         }
     };
@@ -619,18 +618,44 @@
                 ((mouseDownPos.x - renderer.domElement.offsetLeft) / renderer.domElement.width) * 2 - 1, -((mouseDownPos.y - renderer.domElement.offsetTop) / renderer.domElement.height) * 2 + 1,
                 0.5
             );
-            projector.unprojectVector(vector, camera);
+            vector.unproject(camera);
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
             var intersects = raycaster.intersectObjects(cratesContainer.children, true);
 
-            if (intersects.length > 0 && intersects[0].object.recordId >= 0) {
-                var clickedRecord = records[intersects[0].object.recordId];
-                if (selectedRecord === clickedRecord.id) {
-                    flipSelectedRecord();
-                } else {
-                    selectRecord(clickedRecord.id);
+            // If intersect something
+            if (intersects.length > 0) {
+                var clickedRecord;
+
+                // Get the first visible record intersected
+                for (var i = 0; i < intersects.length; i++) {
+
+                    // If intercept a mesh which is not a record, break
+                    if(!intersects[i].object.recordId) {
+                        break;
+                    }
+                    else if (intersects[i].object.visible && intersects[i].object.recordId >= 0) {
+                        clickedRecord = records[intersects[i].object.recordId];
+                        break;
+                    }
                 }
-            } else {
+
+                // If there is one
+                if (clickedRecord) {
+                    if (selectedRecord === clickedRecord.id) {
+                        flipSelectedRecord();
+                    } else {
+                        selectRecord(clickedRecord.id);
+                    }
+                }
+
+                // All intersected records are not visibles
+                else {
+                    resetShownRecord();
+                }
+            }
+
+            // No record has been intersected
+            else {
                 resetShownRecord();
             }
         }
@@ -801,7 +826,7 @@
 
 
         /*==========  Depth of field shader  ==========*/
-        
+
         dof = new THREE.ShaderPass(THREE.DoFShader);
         dof.uniforms.tDepth.value = depthTarget;
         dof.uniforms.size.value.set(canvasWidth, canvasHeight);
@@ -1182,11 +1207,14 @@
 
     /*==========  Public attributes  ==========*/
 
-    exports.canvas = function() {
+    exports.getCanvas = function() {
         return renderer.domElement;
     };
-    exports.recordsDataList = function() {
+    exports.getRecordsDataList = function() {
         return recordsDataList;
+    };
+    exports.getSelectedRecord = function() {
+        return records[selectedRecord];
     };
 
 
