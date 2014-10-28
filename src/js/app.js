@@ -222,6 +222,7 @@ var GUI = (function() {
         $artistSearchContainer = $('#artist-search');
         $bottomBar = $('#bottom-bar');
         $listenButton = $('#cratedigger-record-listen');
+        
 
         initEventListeners();
 
@@ -237,6 +238,7 @@ var GUI = (function() {
             $searchInput.prop('disabled', true);
             API.getPlaylistFromArtist($searchInput.val(), function(playlist) {
                 cratedigger.loadRecords(playlist);
+                DeezerPlayer.setTracksCollection(playlist);
                 setTimeout(function() {
                     $artistSearchContainer.fadeOut(1000);
                 }, 2000);
@@ -246,7 +248,7 @@ var GUI = (function() {
 
     function listenButtonClickHandler(e) {
         e.stopPropagation();
-        DeezerPlayer.playTrack(cratedigger.getSelectedRecord());
+        DeezerPlayer.playTrack(cratedigger.getSelectedRecord().data);
         return false;
     }
 
@@ -273,7 +275,23 @@ var GUI = (function() {
 
 var DeezerPlayer = (function() {
 
-    var player;
+    var player,
+        $trackArtist,
+        $trackTitle,
+        $trackCover,
+        $trackBar,
+        $bufferBar,
+        $buttonPrev,
+        $buttonPlayPause,
+        $buttonNext,
+        unplayedTracks,
+        playingTrack,
+        waitingTrackToPlay = false,
+        playTimeout,
+        playerState = 'paused',
+        constants = {
+            playTimeout: 5000
+        };
 
     function init() {
         DZ.init({
@@ -287,6 +305,42 @@ var DeezerPlayer = (function() {
                 onload: onPlayerLoaded
             }
         });
+
+        $trackArtist     = $('.track .track-artist');
+        $trackTitle      = $('.track .track-title');
+        $trackCover      = $('.track .track-cover');
+        $trackBar        = $('.track-bar');
+        $bufferBar       = $('.buffer-bar');
+        $buttonPrev      = $('.track-control-button.button-prev');
+        $buttonPlayPause = $('.track-control-button.button-playpause');
+        $buttonNext      = $('.track-control-button.button-next');
+
+        initEventListeners();
+    }
+
+    function initEventListeners() {
+        $buttonPrev.on('click', onPrevButtonClick);
+        $buttonPlayPause.on('click', onPlayPauseButtonClick);
+        $buttonNext.on('click', onNextButtonClick);
+    }
+    
+    function onPrevButtonClick(e) {
+        playUnplayedTrack();
+    }
+    
+    function onPlayPauseButtonClick(e) {
+        if (playerState == 'paused') {
+            DZ.player.play();
+            playPauseButtonSetToPause();      
+        }
+        else {
+            DZ.player.pause();
+            playPauseButtonSetToPlay(); 
+        }
+    }
+    
+    function onNextButtonClick(e) {
+        playUnplayedTrack();
     }
 
     function onPlayerLoaded() {
@@ -297,13 +351,67 @@ var DeezerPlayer = (function() {
                 console.log('Not logged :(');
             }
         });
+        DZ.Event.subscribe('player_play', onTrackPlay);
+        DZ.Event.subscribe('track_end', onTrackEnd);
+        DZ.Event.subscribe('player_position', onPlayerPositionUpdate);
+        DZ.Event.subscribe('player_buffering', onPlayerBufferingUpdate);
+        DZ.Event.subscribe('current_track', function(arg){
+            console.log('current_track', arg.index, arg.track.title, arg.track.album.title);
+        });
     }
 
-    function playTrack(record) {
-        console.log(record);
-        var id = record.data.deezer_id;
-        console.log('play id:', id);
-        DZ.player.playTracks([id]);
+    function onTrackPlay() { // not needed ? see current_track
+        if (waitingTrackToPlay) {
+            clearInterval(playTimeout);
+            playingTrack = waitingTrackToPlay;
+            $trackArtist.text(waitingTrackToPlay.artist);
+            $trackTitle.text(waitingTrackToPlay.title);
+            $trackCover.css('background-image', 'url(' + waitingTrackToPlay.cover +')');
+            waitingTrackToPlay = false;
+        }
+    }
+
+    function onPlayerPositionUpdate(arg) {
+        $trackBar.css('width', (100*arg[0]/arg[1]) + '%');
+    }
+
+    function onPlayerBufferingUpdate(percent) {
+        $bufferBar.css('width', percent + '%');  
+    }
+
+    function onTrackEnd() {
+        if (playingTrack) {
+            playingTrack = false;
+            playUnplayedTrack();
+        }
+    }
+
+    function playTrack(track) {
+        DZ.player.playTracks([track.deezer_id]);
+        waitingTrackToPlay = track;
+        playTimeout = setTimeout(function() {
+            if (waitingTrackToPlay) {
+                console.log('Error');
+                playUnplayedTrack();
+            }
+        }, constants.playTimeout);
+        playPauseButtonSetToPause(); 
+    }
+
+    function playUnplayedTrack() {
+        console.log('play a track');
+        var track = unplayedTracks[Math.floor(Math.random()*unplayedTracks.length)];
+        playTrack(track);
+    }
+
+    function playPauseButtonSetToPlay() {
+        playerState = 'paused';
+        $buttonPlayPause.text('Play');
+    }
+
+    function playPauseButtonSetToPause() {
+        playerState = 'playing';
+        $buttonPlayPause.text('Pause');
     }
 
     function login() {
@@ -320,9 +428,16 @@ var DeezerPlayer = (function() {
         }, { perms: 'email, manage_library' });
     }
 
+    function setTracksCollection(tracksCollection) {
+        unplayedTracks = tracksCollection;
+        console.log(tracksCollection);
+        console.log(unplayedTracks[0]);
+    }
+
     return {
         init: init,
-        playTrack: playTrack
+        playTrack: playTrack,
+        setTracksCollection: setTracksCollection
     };
 
 })();

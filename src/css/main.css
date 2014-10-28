@@ -48,6 +48,7 @@ input:disabled {
   right: 0;
   top: 0;
   bottom: 0;
+  box-shadow: -5px 0px 51px 2px rgba(0, 0, 0, 0.8);
 }
 #cratedigger {
   background-color: #111111;
@@ -121,28 +122,209 @@ input:disabled {
   width: 325px;
   height: 100%;
   position: relative;
+  background-color: #e9eef2;
 }
 .track-header {
   height: 110px;
-  background-color: #e9eef2;
+  z-index: 10;
+  position: relative;
+  padding: 26px 0 12px;
+  box-sizing: border-box;
+}
+.track-header .column-container {
+  position: absolute;
+  bottom: 12px;
+  max-height: 120px;
+  overflow: hidden;
 }
 .track-cover {
-  height: 262px;
-  background-color: #9fabb3;
+  height: 325px;
+  z-index: 7;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
 }
 .track-controls {
   height: 44px;
-  background-color: #e9eef2;
+  z-index: 8;
+  position: relative;
+  box-shadow: 0px -5px 46px -11px rgba(0, 0, 0, 0.7);
+}
+.track-controls .track-bar-container {
+  height: 3px;
+  width: 100%;
+  position: relative;
+}
+.track-controls .track-bar-container .bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+}
+.track-controls .track-bar-container .bar.buffer-bar {
+  z-index: 8;
+  background-color: #9fabb3;
+}
+.track-controls .track-bar-container .bar.track-bar {
+  z-index: 9;
+  background-color: #111111;
+}
+.track-controls ul.track-controls-buttons {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 41px;
+}
+.track-controls ul.track-controls-buttons li.track-control-button {
+  display: table-cell;
+  text-transform: uppercase;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  color: #9fabb3;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+  overflow: hidden;
+}
+.track-controls ul.track-controls-buttons li.track-control-button:hover,
+.track-controls ul.track-controls-buttons li.track-control-button.active {
+  color: #111111;
+}
+.track-controls ul.track-controls-buttons li.track-control-button:active {
+  background-color: #9fabb3;
+  color: white;
 }
 .track-buttons {
-  height: 112px;
-  background-color: #9fabb3;
+  height: 118px;
+  z-index: 10;
+  position: relative;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+.track-buttons .column {
+  height: 44px;
+  overflow: hidden;
 }
 .tastes {
-  height: 180px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 597px;
+  padding-bottom: 60px;
+  box-sizing: border-box;
   background-color: #e9eef2;
+  z-index: 5;
+}
+.tastes .tastes-bar {
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #111111;
+  color: #e9eef2;
+  padding: 0 30px;
+}
+.tastes .tastes-list-container {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 44px;
+}
+.tastes .tastes-list-container .tastes-list-inner {
+  overflow-y: auto;
+  height: 100%;
+}
+.tastes .tastes-list-container .tastes-list-inner ul.tastes-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding: 0 30px;
+}
+.tastes .tastes-list-container .tastes-list-inner ul.tastes-list li.tastes-list-item {
+  font-size: 12px;
+  height: 32px;
+  line-height: 32px;
+  border-bottom: 1px solid rgba(159, 171, 179, 0.5);
 }
 .footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 60px;
+  background-color: #111111;
+  z-index: 12;
+}
+.column-container {
+  padding: 0 30px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+.column-container .column {
+  width: 50%;
+  box-sizing: border-box;
+  float: left;
+}
+.column-container .column:first-child {
+  padding-right: 3px;
+}
+.column-container .column:last-child {
+  padding-left: 3px;
+}
+.column-container:after {
+  content: " ";
+  clear: both;
+  display: block;
+}
+.track-artist {
+  font-size: 20px;
+  color: #9fabb3;
+}
+.track-title {
+  font-size: 20px;
+  color: #111111;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.button {
+  display: inline-block;
+  padding: 6px 8px;
+  text-decoration: none;
+  color: #e9eef2;
+  width: 100%;
+  height: 44px;
+  line-height: 32px;
   background-color: #9fabb3;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 6px;
+  font-size: 20px;
+  -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+}
+.button:hover {
+  color: #9fabb3;
+  background-color: #fff;
+}
+.button.button-black {
+  color: #e9eef2;
+  font-weight: 700;
+  background-color: #111111;
+}
+.button.button-black:hover {
+  color: #111111;
+  background-color: #fff;
 }

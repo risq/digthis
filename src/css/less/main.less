@@ -55,6 +55,7 @@ input {
 	right: 0;
 	top: 0;
 	bottom: 0;
+	box-shadow: -5px 0px 51px 2px rgba(0,0,0,0.8);
 }
 
 #cratedigger {
@@ -141,34 +142,239 @@ input {
 	width: @rightColumnWidth;
 	height: 100%;
 	position: relative;
+	background-color: @white;
 }
 
 .track-header {
-	height: 110px;
-	background-color: @white;
+	height: @trackHeaderHeight;
+	z-index: 10;
+	position: relative;
+	padding: 26px 0 12px;
+	box-sizing: border-box;
+
+	.column-container {
+		position: absolute;
+		bottom: 12px;
+		max-height: 120px;
+		overflow: hidden;
+	}
 }
 
 .track-cover {
-	height: 262px;
-	background-color: @gray;
+	height: @trackCoverHeight;
+	z-index: 7;
+	position: relative;
+	background-size: cover;
+	background-position: center center;
 }
 
 .track-controls {
-	height: 44px;
-	background-color: @white;
+	height: @trackControlsHeight;
+	z-index: 8;
+	position: relative;
+	box-shadow: 0px -5px 46px -11px rgba(0, 0, 0, 0.7);
+
+	.track-bar-container {
+		height: @trackBarHeight;
+		width: 100%;
+		position:relative;
+
+		.bar {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			width: 0;
+			
+			&.buffer-bar {
+				z-index: 8;
+				background-color: @gray;
+			}
+
+			&.track-bar {
+				z-index: 9;
+				background-color: @black;
+			}
+		}
+	}
+
+	ul.track-controls-buttons {
+		display: table;
+		table-layout:fixed;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		height: @trackControlsHeight - @trackBarHeight;
+
+		li.track-control-button {
+			display: table-cell;
+			text-transform: uppercase;
+			padding: 0;
+			text-align: center;
+			vertical-align: middle;
+			color: @gray;
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+			overflow: hidden;
+
+			&:hover, &.active {
+				color: @black;
+			}
+
+			&:active {
+				background-color: @gray;
+				color: white;
+			}
+		}
+	}
 }
 
 .track-buttons {
-	height: 112px;
-	background-color: @gray;
+	height: @trackButtonsHeight;
+	z-index: 10;
+	position: relative;
+	padding: 12px 0;
+	box-sizing: border-box;
+
+	.column {
+		height: 44px;
+		overflow: hidden;
+	}
 }
 
 .tastes {
-	height: 180px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	padding-top: (@trackHeaderHeight + @trackCoverHeight + @trackControlsHeight + @trackButtonsHeight);
+	padding-bottom: @bottomBarHeight;
+	box-sizing: border-box;
 	background-color: @white;
+	z-index: 5;
+
+	.tastes-bar {
+		width: 100%;
+		height: 44px;
+		line-height: 44px;
+		font-size: 20px;
+		font-weight: 700;
+		text-transform: uppercase;
+		background-color: @black;
+		color: @white;
+		padding: 0 30px;
+	}
+
+	.tastes-list-container {
+		height: 100%;
+		width: 100%;
+		box-sizing: border-box;
+		padding-bottom: 44px;
+
+		.tastes-list-inner {
+			overflow-y: auto;
+			height: 100%;
+
+			ul.tastes-list {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				padding: 0 30px;
+
+				li.tastes-list-item {
+					font-size: 12px;
+					height: 32px;
+					line-height: 32px;
+					border-bottom: 1px solid fadeout(@gray, 50%);
+				}
+			}
+		}
+	}
 }
 
 .footer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	height: @bottomBarHeight;
+	background-color: @black;
+	z-index: 12;
+}
+
+.column-container {
+	padding: 0 30px;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	position: relative;
+
+	.column {
+		width: 50%;
+		box-sizing: border-box;
+		float: left;
+
+		&:first-child {
+			padding-right: 3px;
+		}
+
+		&:last-child {
+			padding-left: 3px;
+		}
+	}
+
+	&:after {
+		content: " ";
+		clear: both;
+		display: block;
+	}
+}
+
+.track-artist {
+	font-size: 20px;
+	color: @gray;
+}
+
+.track-title {
+	font-size: 20px;
+	color: @black;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+
+.button {
+	display: inline-block;
+	padding: 6px 8px;
+	text-decoration: none;
+	color: @white;
+	width: 100%;
+	height: 44px;
+	line-height: 32px; // ( = height - padding)
 	background-color: @gray;
+	box-sizing: border-box;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 6px;
+	font-size: 20px;
+	transition: all 0.2s ease-in-out;
+
+	&:hover {
+		color: @gray;
+		background-color: #fff;
+	}
+
+	&.button-black {
+		color: @white;
+		font-weight: 700;
+		background-color: @black;
+
+		&:hover {
+			color: @black;
+			background-color: #fff;
+		}
+	}
 }
