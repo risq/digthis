@@ -478,7 +478,6 @@ var App = (function() {
 
     function init() {
         cratedigger.init({
-            postprocessing: false,
             infoPanelOpened: function() {
                 GUI.openBottomBar();
             },
