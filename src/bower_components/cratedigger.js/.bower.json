@@ -26,11 +26,11 @@
     "threejs": "r69",
     "dat-gui": "~0.5.0"
   },
-  "_release": "a5e2dd22cd",
+  "_release": "a2e2f1bc74",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "a5e2dd22cdc0a4ba1fb913796c8c8f5cbc66208a"
+    "commit": "a2e2f1bc74819a99eb6cc39c0ff8911ca67652d2"
   },
   "_source": "git://github.com/risq/cratedigger.js.git",
   "_target": "master",

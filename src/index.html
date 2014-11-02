@@ -82,6 +82,7 @@
                 </div>
                 <div class="track-buttons">
                     <div class="column-container">
+                        <a href="#" id="deezer-login-button" class="button button-black">Deezer Login</a>
                         <a href="#" class="button button-black">Dig this artist</a>
                     </div>
                     <div class="column-container">
@@ -100,18 +101,10 @@
                     <div class="tastes-list-container">
                         <div class="tastes-list-inner">
                             <ul class="tastes-list">
-                                <li class="tastes-list-item">Redman - Tonight's Da Night</li>
-                                <li class="tastes-list-item">Redman (artist)</li>
-                                <li class="tastes-list-item">Sit - Dolor Amet Lorem</li>
-                                <li class="tastes-list-item">Redman - Tonight's Da Night</li>
-                                <li class="tastes-list-item">Redman (artist)</li>
-                                <li class="tastes-list-item">Sit - Dolor Amet Lorem</li>
-                                <li class="tastes-list-item">Redman - Tonight's Da Night</li>
-                                <li class="tastes-list-item">Redman (artist)</li>
-                                <li class="tastes-list-item">Sit - Dolor Amet Lorem</li>
-                                <li class="tastes-list-item">Redman - Tonight's Da Night</li>
-                                <li class="tastes-list-item">Redman (artist)</li>
-                                <li class="tastes-list-item">Sit - Dolor Amet Lorem</li>
+                                <li class="tastes-list-item template">
+                                    <span class="tastes-artist"></span> -
+                                    <span class="tastes-track"></span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -144,7 +137,11 @@
 
     <script src="bower_components/cratedigger.js/dist/scripts/cratedigger.js"></script>
 
-    <script src="js/app.js"></script>
+    <script src="js/API.js"></script>
+    <script src="js/DeezerPlayer.js"></script>
+    <script src="js/Tastes.js"></script>
+    <script src="js/GUI.js"></script>
+    <script src="js/App.js"></script>
 </body>
 
 </html>
