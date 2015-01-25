@@ -5,14 +5,14 @@ var del = require('del');
 var paths = {
     less: ['./src/css/less/*.less'],
     js: ['./src/js/*.js'],
-    font: './src/font/**',
+    font: './src/fonts/**',
     img: './src/img/**',
     html: './src/*.html',
     dist: {
         css: './dist/css/',
         js: './dist/js/',
         html: './dist/',
-        font: './dist/font',
+        font: './dist/fonts',
         img: './dist/img'
     }
 };

@@ -17,6 +17,7 @@
   "dependencies": {
     "cratedigger.js": "master",
     "modernizr": "~2.8.3",
-    "normalize.css": "~3.0.2"
+    "normalize.css": "~3.0.2",
+    "lodash": "~3.0.0"
   }
 }

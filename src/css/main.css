@@ -147,6 +147,16 @@ input:disabled {
   background-size: cover;
   background-position: center center;
 }
+.track-cover .cover-button-like {
+  position: absolute;
+  left: 48px;
+  bottom: 48px;
+}
+.track-cover .cover-button-dislike {
+  position: absolute;
+  right: 48px;
+  bottom: 48px;
+}
 .track-controls {
   height: 44px;
   z-index: 8;
@@ -317,17 +327,96 @@ input:disabled {
   font-size: 20px;
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .button:hover {
   color: #9fabb3;
-  background-color: #fff;
+  background-color: #e9eef2;
 }
-.button.button-black {
+.round-button {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
   color: #e9eef2;
+  text-align: center;
+  text-decoration: none;
+  background: #9fabb3;
+  box-shadow: 0 0 3px #9fabb3;
+  font-size: 20px;
+  cursor: pointer;
+  -webkit-transition: all 0.1s ease-in-out;
+          transition: all 0.1s ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.round-button:hover {
+  color: #9fabb3;
+  background-color: #e9eef2;
+}
+.round-button.round-button-big {
+  width: 92px;
+  height: 92px;
+  line-height: 92px;
+  font-size: 48px;
+}
+.round-button.button-green {
+  background-color: rgba(15, 219, 0, 0.2);
+  box-shadow: 0 0 3px rgba(15, 219, 0, 0.2);
+}
+.round-button.button-green:hover,
+.round-button.button-green.active {
+  color: #e9eef2;
+  background-color: #0fdb00;
+}
+.round-button.button-green:active {
+  color: #0fdb00;
+  background-color: #e9eef2;
+}
+.round-button.button-red {
+  background-color: rgba(192, 12, 0, 0.2);
+  box-shadow: 0 0 3px rgba(192, 12, 0, 0.2);
+}
+.round-button.button-red:hover,
+.round-button.button-red.active {
+  color: #e9eef2;
+  background-color: #c00c00;
+}
+.round-button.button-red:active {
+  color: #c00c00;
+  background-color: #e9eef2;
+}
+.button-black {
   font-weight: 700;
+  color: #e9eef2;
   background-color: #111111;
 }
-.button.button-black:hover {
+.button-black:hover {
   color: #111111;
-  background-color: #fff;
+  background-color: #e9eef2;
+}
+.button-green {
+  font-weight: 700;
+  color: #e9eef2;
+  background-color: #0fdb00;
+  box-shadow: 0 0 3px #0fdb00;
+}
+.button-green:hover {
+  color: #0fdb00;
+  background-color: #e9eef2;
+}
+.button-red {
+  font-weight: 700;
+  color: #e9eef2;
+  background-color: #c00c00;
+  box-shadow: 0 0 3px #c00c00;
+}
+.button-red:hover {
+  color: #c00c00;
+  background-color: #e9eef2;
 }

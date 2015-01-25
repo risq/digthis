@@ -170,6 +170,18 @@ input {
 	position: relative;
 	background-size: cover;
 	background-position: center center;
+
+	.cover-button-like {
+		position: absolute;
+		left: 48px;
+		bottom: 48px;
+	}
+
+	.cover-button-dislike {
+		position: absolute;
+		right: 48px;
+		bottom: 48px;
+	}
 }
 
 .track-controls {
@@ -365,20 +377,103 @@ input {
 	margin-bottom: 6px;
 	font-size: 20px;
 	transition: all 0.2s ease-in-out;
+    user-select: none;
 
 	&:hover {
 		color: @gray;
-		background-color: #fff;
+		background-color: @white;
+	}
+}
+
+.round-button {
+    width:50px;
+    height:50px;
+    line-height:50px;
+    border-radius: 50%;
+    color: @white;
+    text-align:center;
+    text-decoration:none;
+    background: @gray;
+    box-shadow: 0 0 3px @gray;
+    font-size:20px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    user-select: none;
+
+    &:hover {
+		color: @gray;
+		background-color: @white;
 	}
 
-	&.button-black {
-		color: @white;
-		font-weight: 700;
-		background-color: @black;
+	&.round-button-big {
+		width: 92px;
+	    height: 92px;
+	    line-height: 92px;
+	    font-size: 48px;
+	}
 
-		&:hover {
-			color: @black;
-			background-color: #fff;
+	&.button-green {
+		background-color: fade(@green, 20%);
+		box-shadow: 0 0 3px fade(@green, 20%);
+
+		&:hover, &.active {
+			color: @white;
+			background-color: @green;
 		}
+
+		&:active {
+			color: @green;
+			background-color: @white;
+		}
+	}
+
+	&.button-red {
+		background-color: fade(@red, 20%);
+		box-shadow: 0 0 3px fade(@red, 20%);
+
+		&:hover, &.active {
+			color: @white;
+			background-color: @red;
+		}
+
+		&:active {
+			color: @red;
+			background-color: @white;
+		}
+	}
+}
+
+.button-black {
+	font-weight: 700;
+	color: @white;
+	background-color: @black;
+
+	&:hover {
+		color: @black;
+		background-color: @white;
+	}
+}
+
+.button-green {
+	font-weight: 700;
+	color: @white;
+	background-color: @green;
+	box-shadow: 0 0 3px @green;
+
+	&:hover {
+		color: @green;
+		background-color: @white;
+	}
+}
+
+.button-red {
+	font-weight: 700;
+	color: @white;
+	background-color: @red;
+	box-shadow: 0 0 3px @red;
+
+	&:hover {
+		color: @red;
+		background-color: @white;
 	}
 }

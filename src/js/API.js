@@ -7,7 +7,7 @@ var API = (function() {
     var apiUrl = 'http://developer.echonest.com/api/v4/';
     var curSong = null;
     var sessionId = null;
-    var maxReq = 8;
+    var maxReq = 20;
     var playlistIDs = [];
     var playlistReleaseIDs = [];
 
@@ -120,6 +120,7 @@ var API = (function() {
         tracksData = getDataFromTracks(songData.tracks, options);
 
         if (tracksData && $.inArray(songData.id, playlistIDs) === -1) {
+            // unique albums :  && $.inArray(tracksData.release_id, playlistReleaseIDs) === -1
             var song = {
                 id: songData.id,
                 title: songData.title,
@@ -196,8 +197,7 @@ var API = (function() {
 
     /*==========  Taste Profile  ==========*/
 
-    function getTasteProfile(userID, done) {
-        console.log('getTasteProfile', userID);
+    function getTasteProfileFromUserID(userID, done) {
 
         $.ajax({
             type: 'GET',
@@ -210,12 +210,12 @@ var API = (function() {
         })
         .done(function(data) {
             var profileID = data.response.catalog.id;
-            readTasteProfile(profileID, function(error, data) {
+            readTasteProfile(profileID, function(error, catalog) {
                 if (error) {
                     done(true);
                 }
                 else {
-                    done(false, data.response.catalog);
+                    done(false, catalog);
                 }
             });
         })
@@ -250,7 +250,7 @@ var API = (function() {
             dataType: 'json'
         })
         .done(function(data) {
-            done(false, data);
+            done(false, data.response.catalog);
         })
         .fail(function() {
             done(true);
@@ -278,16 +278,39 @@ var API = (function() {
         });
     }
 
-    function favoriteTrack(profileID, trackID, done) {
-        console.log('favoriteTrack', trackID);
+    function likeTrack(profileID, trackID, done) {
+        console.log('likeTrack', trackID);
 
         $.ajax({
             type: 'GET',
-            url: apiUrl + 'tasteprofile/favorite',
+            url: apiUrl + 'tasteprofile/rate',
             data: { 
                 api_key: apiKey,
                 id: profileID,
-                item: trackID
+                item: trackID,
+                rating: 10
+            },
+            dataType: 'json'
+        })
+        .done(function(data) {
+            done(false, data);
+        })
+        .fail(function() {
+            done(true);
+        });
+    }
+
+    function dislikeTrack(profileID, trackID, done) {
+        console.log('dislikeTrack', trackID);
+
+        $.ajax({
+            type: 'GET',
+            url: apiUrl + 'tasteprofile/rate',
+            data: { 
+                api_key: apiKey,
+                id: profileID,
+                item: trackID,
+                rating: 1
             },
             dataType: 'json'
         })
@@ -311,7 +334,9 @@ var API = (function() {
     return {
         init: init,
         getPlaylistFromArtist: getPlaylistFromArtist,
-        getTasteProfile: getTasteProfile,
-        favoriteTrack: favoriteTrack
+        getTasteProfileFromUserID: getTasteProfileFromUserID,
+        readTasteProfile: readTasteProfile,
+        likeTrack: likeTrack,
+        dislikeTrack: dislikeTrack
     };
 })();

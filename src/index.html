@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="bower_components/normalize.css/normalize.css">
     <link rel="stylesheet" href="bower_components/cratedigger.js/dist/styles/cratedigger.min.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
     <script src="bower_components/modernizr/modernizr.js"></script>
@@ -62,7 +63,14 @@
                         <div class="track-title"></div>
                     </div>
                 </div>
-                <div class="track-cover"></div>
+                <div class="track-cover">
+                    <div id="cratedigger-record-like" class="cover-button-like round-button round-button-big button-green">
+                        <i class="fa fa-thumbs-up"></i>
+                    </div>
+                    <div id="cratedigger-record-dislike" class="cover-button-dislike round-button round-button-big button-red">
+                        <i class="fa fa-thumbs-down"></i>
+                    </div>
+                </div>
                 <div class="track-controls">
                     <div class="track-bar-container">
                         <div class="bar buffer-bar"></div>
@@ -83,7 +91,7 @@
                 <div class="track-buttons">
                     <div class="column-container">
                         <a href="#" id="deezer-login-button" class="button button-black">Deezer Login</a>
-                        <a href="#" class="button button-black">Dig this artist</a>
+                        <a href="#" id="dig-artist-button" class="button button-black">Dig this artist</a>
                     </div>
                     <div class="column-container">
                         <div class="column">
@@ -126,6 +134,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="bower_components/classie/classie.js"></script>
+    <script src="bower_components/lodash/lodash.min.js"></script>
     <script src="bower_components/threejs/build/three.min.js"></script>
     <script src="bower_components/tween.js/build/tween.min.js"></script>
     <script src="bower_components/stats.js/build/stats.min.js"></script>
