@@ -204,7 +204,7 @@ var DeezerPlayer = ( function () {
             loggedUserID = userID;
             $deezerLoginButton.hide();
             console.log( 'User is logged with id', userID );
-            Tastes.init( userID );
+            // Tastes.init( userID );
         }
     }
 

@@ -90,9 +90,13 @@ input:disabled {
   color: #e9eef2;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   table-layout: fixed;
 }
-#bottom-bar.closed {
+#bottom-bar.hidden {
   bottom: -60px;
 }
 #bottom-bar .bottom-bar-item {

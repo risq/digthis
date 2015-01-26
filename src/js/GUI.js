@@ -6,21 +6,28 @@ var GUI = ( function () {
 
     var $searchInput,
         $artistSearchContainer,
-        $bottomBar,
         $listenButton,
         $likeTrackButton,
         $dislikeTrackButton,
-        $digArtistButton;
+        $digArtistButton,
+        $bottomBar,
+        $bottomBarPrevButton,
+        $bottomBarMidButton,
+        $bottomBarNextButton;
 
     function init() {
         $searchInput = $( '#artist-search-input' );
         $artistSearchContainer = $( '#artist-search' );
-        $bottomBar = $( '#bottom-bar' );
         $listenButton = $( '#cratedigger-record-listen' );
         $likeTrackButton = $( '#cratedigger-record-like' );
         $dislikeTrackButton = $( '#cratedigger-record-dislike' );
         $digArtistButton = $( '#dig-artist-button' );
+        $bottomBar = $( '#bottom-bar' );
+        $bottomBarPrevButton = $bottomBar.find('.bottom-bar-prev-button');
+        $bottomBarMidButton = $bottomBar.find('.bottom-bar-mid-button');
+        $bottomBarNextButton = $bottomBar.find('.bottom-bar-next-button');
 
+        console.log($bottomBarPrevButton)
 
         initEventListeners();
 
@@ -32,7 +39,25 @@ var GUI = ( function () {
         $likeTrackButton.on( 'click', onLiketrackButtonClick );
         $dislikeTrackButton.on( 'click', onDisliketrackButtonClick );
         $digArtistButton.on( 'click', onDigArtistButtonClick );
+        $bottomBarPrevButton.on('click', onBottomBarPrevButtonClick);
+        $bottomBarMidButton.on('click', onBottomBarMidButtonClick);
+        $bottomBarNextButton.on('click', onBottomBarNextButtonClick);
     }
+
+
+    function onBottomBarPrevButtonClick( e ) {
+        console.log('prev', cratedigger);
+        cratedigger.selectPrevRecord();
+    }
+
+    function onBottomBarMidButtonClick( e ) {
+        cratedigger.flipSelectedRecord();
+    }
+
+    function onBottomBarNextButtonClick( e ) {
+        cratedigger.selectNextRecord();
+    }
+
 
     function onSearchInputKeypress( e ) {
         if ( e.which == 13 && $searchInput.val() && $searchInput.val() !== '' ) {
@@ -113,14 +138,18 @@ var GUI = ( function () {
         }
     }
 
-    function openBottomBar() {}
+    function showBottomBar() {
+        $bottomBar.removeClass('hidden');
+    }
 
-    function closeBottomBar() {}
+    function hideBottomBar() {
+        $bottomBar.addClass('hidden');
+    }
 
     return {
         init: init,
-        openBottomBar: openBottomBar,
-        closeBottomBar: closeBottomBar,
+        showBottomBar: showBottomBar,
+        hideBottomBar: hideBottomBar,
         updateTrackTasteButtons: updateTrackTasteButtons
     };
 

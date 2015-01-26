@@ -9,16 +9,16 @@ var App = (function() {
 
         cratedigger.init({
             infoPanelOpened: function() {
-                GUI.openBottomBar();
+                GUI.hideBottomBar();
             },
             infoPanelClosed: function() {
-                GUI.openBottomBar();   
+                GUI.showBottomBar();   
             },
             elements: {
                 rootContainerId: 'cratedigger',
                 canvasContainerId: 'cratedigger-canvas',
                 loadingContainerId: 'cratedigger-loading',
-                infosContainerId: 'cratedigger-infos',
+                infoContainerId: 'cratedigger-info',
                 titleContainerId: 'cratedigger-record-title',
                 artistContainerId: 'cratedigger-record-artist',
                 coverContainerId: 'cratedigger-record-cover'

@@ -110,9 +110,10 @@ input {
 	color: @white;
 	overflow: hidden;
 	transition: all 0.3s ease-in-out;
+	user-select: none;
 	table-layout: fixed;
 
-	&.closed {
+	&.hidden {
 		bottom: -@bottomBarHeight;
 	}
 
