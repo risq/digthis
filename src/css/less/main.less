@@ -301,6 +301,7 @@ input {
 				padding: 0 30px;
 
 				li.tastes-list-item {
+					overflow: hidden;
 					font-size: 12px;
 					height: 32px;
 					line-height: 32px;
@@ -475,5 +476,20 @@ input {
 	&:hover {
 		color: @red;
 		background-color: @white;
+	}
+}
+
+.label-loading {
+	display: none;
+}
+
+.loading {
+
+	.label-default {
+		display: none;
+	}
+
+	.label-loading {
+		display: inline;
 	}
 }

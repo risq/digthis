@@ -21,8 +21,7 @@ input {
   font-size: 80px;
   border-radius: 0;
   text-transform: uppercase;
-  -webkit-transition: border-color 0.3s;
-          transition: border-color 0.3s;
+  transition: border-color 0.3s;
 }
 input:focus {
   outline: none;
@@ -74,8 +73,7 @@ input:disabled {
   vertical-align: middle;
 }
 #artist-search .input-container input {
-  -webkit-transition: all 1s ease-in-out;
-          transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
   margin: auto;
   width: 80%;
 }
@@ -91,8 +89,7 @@ input:disabled {
   display: table;
   color: #e9eef2;
   overflow: hidden;
-  -webkit-transition: all 0.3s ease-in-out;
-          transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   table-layout: fixed;
 }
 #bottom-bar.closed {
@@ -104,8 +101,7 @@ input:disabled {
   text-transform: uppercase;
   line-height: 60px;
   font-size: 30px;
-  -webkit-transition: all 0.15s ease-in-out;
-          transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
   overflow: hidden;
   cursor: pointer;
 }
@@ -199,8 +195,7 @@ input:disabled {
   vertical-align: middle;
   color: #9fabb3;
   cursor: pointer;
-  -webkit-transition: all 0.2s ease-in-out;
-          transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   overflow: hidden;
 }
 .track-controls ul.track-controls-buttons li.track-control-button:hover,
@@ -264,6 +259,7 @@ input:disabled {
   padding: 0 30px;
 }
 .tastes .tastes-list-container .tastes-list-inner ul.tastes-list li.tastes-list-item {
+  overflow: hidden;
   font-size: 12px;
   height: 32px;
   line-height: 32px;
@@ -325,8 +321,7 @@ input:disabled {
   text-align: center;
   margin-bottom: 6px;
   font-size: 20px;
-  -webkit-transition: all 0.2s ease-in-out;
-          transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -348,8 +343,7 @@ input:disabled {
   box-shadow: 0 0 3px #9fabb3;
   font-size: 20px;
   cursor: pointer;
-  -webkit-transition: all 0.1s ease-in-out;
-          transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -419,4 +413,13 @@ input:disabled {
 .button-red:hover {
   color: #c00c00;
   background-color: #e9eef2;
+}
+.label-loading {
+  display: none;
+}
+.loading .label-default {
+  display: none;
+}
+.loading .label-loading {
+  display: inline;
 }

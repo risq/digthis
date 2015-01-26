@@ -32,7 +32,7 @@ var Tastes = ( function () {
             catalogID = catalog.id;
             tasteItems = catalog.items;
             $tastesList.empty();
-            catalog.items.forEach( function ( item ) {
+            tasteItems.forEach( function ( item ) {
                 createTasteItemElement( item.artist_name, item.song_name );
             } );
         }

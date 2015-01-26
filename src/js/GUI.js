@@ -56,6 +56,7 @@ var GUI = ( function () {
     function onLiketrackButtonClick( e ) {
         var playingTrack = DeezerPlayer.getPlayingTrack();
         if ( playingTrack ) {
+            $likeTrackButton.addClass('loading');
             Tastes.likeTrack( playingTrack, setTrackLiked );
         }
     }
@@ -63,6 +64,7 @@ var GUI = ( function () {
     function onDisliketrackButtonClick( e ) {
         var playingTrack = DeezerPlayer.getPlayingTrack();
         if ( playingTrack ) {
+            $dislikeTrackButton.addClass('loading');
             Tastes.dislikeTrack( playingTrack, setTrackDisliked );
         }
     }
@@ -81,20 +83,27 @@ var GUI = ( function () {
         console.log( 'onTrackLiked' );
         $likeTrackButton.addClass( 'active' );
         $dislikeTrackButton.removeClass( 'active' );
+        $likeTrackButton.removeClass('loading');
+        $dislikeTrackButton.removeClass('loading');
     }
 
     function setTrackDisliked() {
         $likeTrackButton.removeClass( 'active' );
         $dislikeTrackButton.addClass( 'active' );
+        $likeTrackButton.removeClass('loading');
+        $dislikeTrackButton.removeClass('loading');
     }
 
     function resetTrackLikeButtons() {
         $likeTrackButton.removeClass( 'active' );
         $dislikeTrackButton.removeClass( 'active' );
+        $likeTrackButton.removeClass('loading');
+        $dislikeTrackButton.removeClass('loading');
     }
 
     function updateTrackTasteButtons( track ) {
         var trackState = Tastes.getTrackTasteState( track.id );
+        console.log('track taste state', trackState);
         if ( trackState === 'liked' ) {
             setTrackLiked();
         } else if ( trackState === 'disliked' ) {
