@@ -12,29 +12,36 @@ body {
 }
 
 input {
-		display: block;
-		margin: 0;
-		padding: 0 0 0.15em;
-		border: none;
-		border-bottom: 2px solid rgba(255,255,255,0.2);
-		background-color: transparent;
-		color: @white;
-		text-overflow: ellipsis;
-		font-weight: bold;
-		font-size: 80px;
-		border-radius: 0;
-		text-transform: uppercase;
-		transition: border-color 0.3s;
+	display: block;
+	margin: 0;
+	padding: 0 0 0.15em;
+	border: none;
+	border-bottom: 2px solid rgba(255,255,255,0.2);
+	background-color: transparent;
+	color: @white;
+	text-overflow: ellipsis;
+	font-weight: bold;
+	font-size: 64px;
+	border-radius: 0;
+	text-transform: uppercase;
+	transition: border-color 0.3s;
 
-		&:focus {
-			outline: none;
-			border-color: rgba(255,255,255,0.4);
-		}
-
-		&:disabled {
-			border-color: rgba(0, 0, 0, 0);
-		}
+	&:focus {
+		outline: none;
+		border-color: rgba(255,255,255,0.4);
 	}
+
+	&:disabled {
+		border-color: rgba(0, 0, 0, 0);
+	}
+}
+
+.fat-label {
+	text-transform: uppercase;
+	color: @white;
+	white-space: nowrap;
+	font-size: 28px;
+}
 
 .template {
 	display: none;
@@ -67,7 +74,7 @@ input {
 }
 
 
-#artist-search {
+#home {
 
 	position: absolute;
 	z-index: 20;
@@ -80,21 +87,35 @@ input {
 	width: 100%;
 	display: table;
 
-	.input-container {
-		width: 100%;
-		display: table-cell;
-		vertical-align: middle;
 
-		input {
-			transition: all 1s ease-in-out;
-			margin: auto;
-			width: 80%;
-		}
+	section {
+		display: table-row;
+
+		.home-container {
+
+			padding: 0 10%;
+			display: table-cell;
+			vertical-align: middle;
+			position: relative;
+		
+			.artist-search {
+
+				margin-bottom: 48px;
+
+				input {
+					transition: all 1s ease-in-out;
+					margin: auto;
+					width: 100%;
+				}
+			}
+
+			.artist-select {
+
+				text-align: right;
+
+			}
+		}	
 	}
-
-	// display: none;//
-
-	
 }
 
 #bottom-bar {
@@ -386,6 +407,54 @@ input {
 	color: @black;
 	text-transform: uppercase;
 	font-weight: 700;
+}
+
+.artist-record-element {
+	display: block;
+	float: right;
+	margin-right: 12px;
+	width: 96px;
+	text-align: center;
+	position: relative;
+	cursor: pointer;
+	box-shadow: 0px 6px 28px -6px rgba(0, 0, 0, 0.8);
+
+	&:hover {
+		
+		.artist-record-name-container {
+			opacity: 1;
+		}
+	}
+
+	.artist-record-cover {
+		display: block;
+		background-size: cover;
+		width: 96px;
+		height: 96px;
+	}
+
+	.artist-record-name-container {
+		display: table;
+		position: absolute;
+		height: 96px;
+		width: 96px;
+		top: 0;
+		left: 0;
+		background-color: fade(#000, 80%);
+		opacity: 0;
+		transition: opacity 0.15s ease-in-out;
+
+		.artist-record-name {
+			display: table-cell;
+			vertical-align: middle;
+			font-size: 16px;
+			color: @white;
+			text-transform: uppercase;
+			font-weight: 700;
+		}
+	}
+
+
 }
 
 

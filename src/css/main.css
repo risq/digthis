@@ -18,7 +18,7 @@ input {
   color: #e9eef2;
   text-overflow: ellipsis;
   font-weight: bold;
-  font-size: 80px;
+  font-size: 64px;
   border-radius: 0;
   text-transform: uppercase;
   transition: border-color 0.3s;
@@ -29,6 +29,12 @@ input:focus {
 }
 input:disabled {
   border-color: rgba(0, 0, 0, 0);
+}
+.fat-label {
+  text-transform: uppercase;
+  color: #e9eef2;
+  white-space: nowrap;
+  font-size: 28px;
 }
 .template {
   display: none;
@@ -55,7 +61,7 @@ input:disabled {
 #cratedigger {
   background-color: #111111;
 }
-#artist-search {
+#home {
   position: absolute;
   z-index: 20;
   background-color: #111111;
@@ -67,15 +73,25 @@ input:disabled {
   width: 100%;
   display: table;
 }
-#artist-search .input-container {
-  width: 100%;
+#home section {
+  display: table-row;
+}
+#home section .home-container {
+  padding: 0 10%;
   display: table-cell;
   vertical-align: middle;
+  position: relative;
 }
-#artist-search .input-container input {
+#home section .home-container .artist-search {
+  margin-bottom: 48px;
+}
+#home section .home-container .artist-search input {
   transition: all 1s ease-in-out;
   margin: auto;
-  width: 80%;
+  width: 100%;
+}
+#home section .home-container .artist-select {
+  text-align: right;
 }
 #bottom-bar {
   position: absolute;
@@ -328,6 +344,44 @@ input:disabled {
 .track-title {
   font-size: 20px;
   color: #111111;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.artist-record-element {
+  display: block;
+  float: right;
+  margin-right: 12px;
+  width: 96px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0px 6px 28px -6px rgba(0, 0, 0, 0.8);
+}
+.artist-record-element:hover .artist-record-name-container {
+  opacity: 1;
+}
+.artist-record-element .artist-record-cover {
+  display: block;
+  background-size: cover;
+  width: 96px;
+  height: 96px;
+}
+.artist-record-element .artist-record-name-container {
+  display: table;
+  position: absolute;
+  height: 96px;
+  width: 96px;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+.artist-record-element .artist-record-name-container .artist-record-name {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 16px;
+  color: #e9eef2;
   text-transform: uppercase;
   font-weight: 700;
 }

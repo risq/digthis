@@ -27,7 +27,13 @@
         <div class="main-inner">
             <div id="cratedigger">
                 <div id="cratedigger-canvas"></div>
-                <div id="cratedigger-loading"></div>
+                <div id="cratedigger-loading">
+                    <div class="info-container">
+                        <div class="vertical-center">
+                            <span class="loading-label">Loading records...</span>
+                        </div>
+                    </div>
+                </div>
                 <div id="cratedigger-info">
                     <div class="info-container">
                         <div class="vertical-center">
@@ -55,8 +61,6 @@
         </div>
         <div class="right-column">
             <div class="track">
-                <!-- <div id="player" style="width:100%;" align="center"></div> -->
-
                 <div class="track-header">
                     <div class="column-container">
                         <div class="track-artist"></div>
@@ -64,6 +68,12 @@
                     </div>
                 </div>
                 <div class="track-cover">
+                    <div class="label-loading track-cover-loading">
+                        <div class="track-cover-loading-icon">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <div class="track-cover-loading-label">Loading...</div>
+                    </div>
                 </div>
                 <div class="track-controls">
                     <div class="track-bar-container">
@@ -102,10 +112,62 @@
     </div>
 
     
-    <div id="artist-search">
-        <div class="input-container">
-            <input type="text" id="artist-search-input"></input>
-        </div>
+    <div id="home">
+        <section>
+            <div class="home-container">
+            </div>
+        </section>
+        <section>
+            <div class="home-container">
+                <div class="artist-search">
+                    <h2 class="fat-label">Enter a seed artist :</h2>
+                    <input type="text" id="home-input" placeholder="Artist or band"></input>
+                </div>
+                <div class="artist-select">
+                    <h2 class="fat-label">Or choose one of the following :</h2>
+                    <div class="artist-record-element">                    
+                        <img class="artist-record-cover" src="img/predefined/milesdavis.png" alt=""></img>
+                        <div class="artist-record-name-container">
+                            <div class="artist-record-name">Miles Davis</div>
+                        </div>
+                    </div>
+                    <div class="artist-record-element">                    
+                        <img class="artist-record-cover" src="img/predefined/atcq.png" alt=""></img>
+                        <div class="artist-record-name-container">
+                            <div class="artist-record-name">A Tribe Called Quest</div>
+                        </div>
+                    </div>
+                    <div class="artist-record-element">                    
+                        <img class="artist-record-cover" src="img/predefined/rollingstones.png" alt=""></img>
+                        <div class="artist-record-name-container">
+                            <div class="artist-record-name">Rolling Stones</div>
+                        </div>
+                    </div>
+                    <div class="artist-record-element">                    
+                        <img class="artist-record-cover" src="img/predefined/jamal.png" alt=""></img>
+                        <div class="artist-record-name-container">
+                            <div class="artist-record-name">Ahmad Jamal</div>
+                        </div>
+                    </div>
+                    <div class="artist-record-element">                    
+                        <img class="artist-record-cover" src="img/predefined/fugees.png" alt=""></img>
+                        <div class="artist-record-name-container">
+                            <div class="artist-record-name">Fugees</div>
+                        </div>
+                    </div>
+                    <div class="artist-record-element">                    
+                        <img class="artist-record-cover" src="img/predefined/nas.png" alt=""></img>
+                        <div class="artist-record-name-container">
+                            <div class="artist-record-name">Nas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="home-container">
+            </div>
+        </section>
     </div>
 
     

@@ -16,8 +16,8 @@ var GUI = ( function () {
         $bottomBarNextButton;
 
     function init() {
-        $searchInput = $( '#artist-search-input' );
-        $artistSearchContainer = $( '#artist-search' );
+        $searchInput = $( '#home-input' );
+        $artistSearchContainer = $( '#home' );
         $listenButton = $( '#cratedigger-record-listen' );
         $likeTrackButton = $( '#cratedigger-record-like' );
         $dislikeTrackButton = $( '#cratedigger-record-dislike' );
@@ -95,6 +95,7 @@ var GUI = ( function () {
     function onDigArtistButtonClick( e ) {
         var playingTrack = DeezerPlayer.getPlayingTrack();
         if ( playingTrack && playingTrack.artist ) {
+            cratedigger.showLoading();
             API.getPlaylistFromArtist( playingTrack.artist, function ( playlist ) {
                 cratedigger.loadRecords( playlist );
                 DeezerPlayer.setTracksCollection( playlist );

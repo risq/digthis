@@ -115,9 +115,7 @@ var DeezerPlayer = ( function () {
     }
 
     function onPlayerPositionUpdate( arg ) {
-        console.log( 'onPlayerPositionUpdate', ( 100 * arg[ 0 ] / arg[ 1 ] ) + '%' );
         $trackBar.css( 'width', ( 100 * arg[ 0 ] / arg[ 1 ] ) + '%' );
-        console.log( $trackBar.css( 'width ') );
     }
 
     function onPlayerBufferingUpdate( percent ) {
