@@ -27,8 +27,6 @@ var GUI = ( function () {
         $bottomBarMidButton = $bottomBar.find('.bottom-bar-mid-button');
         $bottomBarNextButton = $bottomBar.find('.bottom-bar-next-button');
 
-        console.log($bottomBarPrevButton)
-
         initEventListeners();
 
     }

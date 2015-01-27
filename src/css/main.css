@@ -146,6 +146,26 @@ input:disabled {
   position: relative;
   background-size: cover;
   background-position: center center;
+  text-align: center;
+}
+.track-cover .track-cover-loading {
+  height: 325px;
+  background-color: rgba(17, 17, 17, 0.8);
+}
+.track-cover .track-cover-loading .track-cover-loading-icon {
+  color: #e9eef2;
+  padding-top: 100px;
+  font-size: 96px;
+  height: 100px;
+  line-height: 100px;
+}
+.track-cover .track-cover-loading .track-cover-loading-label {
+  color: #e9eef2;
+  text-transform: uppercase;
+  font: 'Montserrat', sans-serif;
+  font-size: 24px;
+  height: 25px;
+  line-height: 25px;
 }
 .track-cover .cover-button-like {
   position: absolute;
@@ -425,5 +445,5 @@ input:disabled {
   display: none;
 }
 .loading .label-loading {
-  display: inline;
+  display: block;
 }

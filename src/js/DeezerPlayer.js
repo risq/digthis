@@ -106,9 +106,8 @@ var DeezerPlayer = ( function () {
     function onTrackPlay() { // not needed ? see current_track
         if ( waitingTrackToPlay ) {
             clearInterval( playTimeout );
+            $trackCover.removeClass('loading');
             playingTrack = waitingTrackToPlay;
-            $trackArtist.text( waitingTrackToPlay.artist );
-            $trackTitle.text( waitingTrackToPlay.title );
             $trackCover.css( 'background-image', 'url(' + waitingTrackToPlay.cover + ')' );
             GUI.updateTrackTasteButtons( waitingTrackToPlay );
             waitingTrackToPlay = false;
@@ -116,7 +115,9 @@ var DeezerPlayer = ( function () {
     }
 
     function onPlayerPositionUpdate( arg ) {
-        $trackBar.css( 'width ', ( 100 * arg[ 0 ] / arg[ 1 ] ) + ' % ' );
+        console.log( 'onPlayerPositionUpdate', ( 100 * arg[ 0 ] / arg[ 1 ] ) + '%' );
+        $trackBar.css( 'width', ( 100 * arg[ 0 ] / arg[ 1 ] ) + '%' );
+        console.log( $trackBar.css( 'width ') );
     }
 
     function onPlayerBufferingUpdate( percent ) {
@@ -131,6 +132,10 @@ var DeezerPlayer = ( function () {
     }
 
     function playTrack( track ) {
+        pause();
+        $trackCover.addClass('loading');
+        $trackArtist.text( track.artist );
+        $trackTitle.text( track.title );
         DZ.player.playTracks( [ track.deezer_id ] );
         waitingTrackToPlay = track;
         playTimeout = setTimeout( function () {
@@ -150,7 +155,6 @@ var DeezerPlayer = ( function () {
     }
 
     function playNextTrack() {
-        pause();
         if ( historyPos == history.length - 1 ) {
             playUnplayedTrack();
             historyPos = history.length - 1;
@@ -161,7 +165,6 @@ var DeezerPlayer = ( function () {
     }
 
     function playPrevTrack() {
-        pause();
         if ( history[ historyPos - 1 ] ) {
             historyPos = historyPos - 1;
             playTrack( history[ historyPos ] );
