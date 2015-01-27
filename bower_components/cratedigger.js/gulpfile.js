@@ -3,7 +3,6 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    clean = require('gulp-clean'),
     concat = require('gulp-concat'),
     runSequence = require('run-sequence'),
     connect = require('gulp-connect'),
@@ -90,6 +89,8 @@ gulp.task('build-demo', function () {
 gulp.task('move-demo-files', function () {
     gulp.src('src/*.js')
         .pipe(gulp.dest('demo/'));
+    gulp.src('src/styles/*.css')
+        .pipe(gulp.dest('demo/styles/'));
 });
 
 gulp.task('deploy-demo', function () {
