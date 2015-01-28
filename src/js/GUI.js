@@ -15,7 +15,8 @@ var GUI = ( function () {
         $bottomBarMidButton,
         $bottomBarNextButton,
         $home,
-        $screenSwitch;
+        $screenSwitch,
+        $deezerLogin;
 
     function init() {
         $searchInput = $( '#home-input' );
@@ -30,7 +31,7 @@ var GUI = ( function () {
         $bottomBarNextButton = $bottomBar.find( '.bottom-bar-next-button' );
         $screenSwitch = $( '.screen-switch' );
         $home = $( '#home' );
-        console.log($screenSwitch);
+        $deezerLogin = $( '.deezer-login-container' );
         initEventListeners();
 
     }
@@ -155,11 +156,16 @@ var GUI = ( function () {
         $bottomBar.addClass( 'hidden' );
     }
 
+    function hideDeezerLogin() {
+        $deezerLogin.hide();
+    }
+
     return {
         init: init,
         showBottomBar: showBottomBar,
         hideBottomBar: hideBottomBar,
-        updateTrackTasteButtons: updateTrackTasteButtons
+        updateTrackTasteButtons: updateTrackTasteButtons,
+        hideDeezerLogin: hideDeezerLogin
     };
 
 } )();
