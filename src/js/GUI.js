@@ -13,7 +13,9 @@ var GUI = ( function () {
         $bottomBar,
         $bottomBarPrevButton,
         $bottomBarMidButton,
-        $bottomBarNextButton;
+        $bottomBarNextButton,
+        $home,
+        $screenSwitch;
 
     function init() {
         $searchInput = $( '#home-input' );
@@ -23,10 +25,12 @@ var GUI = ( function () {
         $dislikeTrackButton = $( '#cratedigger-record-dislike' );
         $digArtistButton = $( '#dig-artist-button' );
         $bottomBar = $( '#bottom-bar' );
-        $bottomBarPrevButton = $bottomBar.find('.bottom-bar-prev-button');
-        $bottomBarMidButton = $bottomBar.find('.bottom-bar-mid-button');
-        $bottomBarNextButton = $bottomBar.find('.bottom-bar-next-button');
-
+        $bottomBarPrevButton = $bottomBar.find( '.bottom-bar-prev-button' );
+        $bottomBarMidButton = $bottomBar.find( '.bottom-bar-mid-button' );
+        $bottomBarNextButton = $bottomBar.find( '.bottom-bar-next-button' );
+        $screenSwitch = $( '.screen-switch' );
+        $home = $( '#home' );
+        console.log($screenSwitch);
         initEventListeners();
 
     }
@@ -37,14 +41,15 @@ var GUI = ( function () {
         $likeTrackButton.on( 'click', onLiketrackButtonClick );
         $dislikeTrackButton.on( 'click', onDisliketrackButtonClick );
         $digArtistButton.on( 'click', onDigArtistButtonClick );
-        $bottomBarPrevButton.on('click', onBottomBarPrevButtonClick);
-        $bottomBarMidButton.on('click', onBottomBarMidButtonClick);
-        $bottomBarNextButton.on('click', onBottomBarNextButtonClick);
+        $bottomBarPrevButton.on( 'click', onBottomBarPrevButtonClick );
+        $bottomBarMidButton.on( 'click', onBottomBarMidButtonClick );
+        $bottomBarNextButton.on( 'click', onBottomBarNextButtonClick );
+        $screenSwitch.on( 'click', onScreenSwitchClick );
     }
 
 
     function onBottomBarPrevButtonClick( e ) {
-        console.log('prev', cratedigger);
+        console.log( 'prev', cratedigger );
         cratedigger.selectPrevRecord();
     }
 
@@ -79,7 +84,7 @@ var GUI = ( function () {
     function onLiketrackButtonClick( e ) {
         var playingTrack = DeezerPlayer.getPlayingTrack();
         if ( playingTrack ) {
-            $likeTrackButton.addClass('loading');
+            $likeTrackButton.addClass( 'loading' );
             Tastes.likeTrack( playingTrack, setTrackLiked );
         }
     }
@@ -87,7 +92,7 @@ var GUI = ( function () {
     function onDisliketrackButtonClick( e ) {
         var playingTrack = DeezerPlayer.getPlayingTrack();
         if ( playingTrack ) {
-            $dislikeTrackButton.addClass('loading');
+            $dislikeTrackButton.addClass( 'loading' );
             Tastes.dislikeTrack( playingTrack, setTrackDisliked );
         }
     }
@@ -103,31 +108,35 @@ var GUI = ( function () {
         }
     }
 
+    function onScreenSwitchClick( e ) {
+        $home.toggleClass('bottom-screen-visible');
+    }
+
     function setTrackLiked() {
         console.log( 'onTrackLiked' );
         $likeTrackButton.addClass( 'active' );
         $dislikeTrackButton.removeClass( 'active' );
-        $likeTrackButton.removeClass('loading');
-        $dislikeTrackButton.removeClass('loading');
+        $likeTrackButton.removeClass( 'loading' );
+        $dislikeTrackButton.removeClass( 'loading' );
     }
 
     function setTrackDisliked() {
         $likeTrackButton.removeClass( 'active' );
         $dislikeTrackButton.addClass( 'active' );
-        $likeTrackButton.removeClass('loading');
-        $dislikeTrackButton.removeClass('loading');
+        $likeTrackButton.removeClass( 'loading' );
+        $dislikeTrackButton.removeClass( 'loading' );
     }
 
     function resetTrackLikeButtons() {
         $likeTrackButton.removeClass( 'active' );
         $dislikeTrackButton.removeClass( 'active' );
-        $likeTrackButton.removeClass('loading');
-        $dislikeTrackButton.removeClass('loading');
+        $likeTrackButton.removeClass( 'loading' );
+        $dislikeTrackButton.removeClass( 'loading' );
     }
 
     function updateTrackTasteButtons( track ) {
         var trackState = Tastes.getTrackTasteState( track.id );
-        console.log('track taste state', trackState);
+        console.log( 'track taste state', trackState );
         if ( trackState === 'liked' ) {
             setTrackLiked();
         } else if ( trackState === 'disliked' ) {
@@ -138,11 +147,11 @@ var GUI = ( function () {
     }
 
     function showBottomBar() {
-        $bottomBar.removeClass('hidden');
+        $bottomBar.removeClass( 'hidden' );
     }
 
     function hideBottomBar() {
-        $bottomBar.addClass('hidden');
+        $bottomBar.addClass( 'hidden' );
     }
 
     return {
