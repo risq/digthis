@@ -66,6 +66,7 @@ var GUI = ( function () {
         if ( e.which == 13 && $searchInput.val() && $searchInput.val() !== '' ) {
             $searchInput.prop( 'disabled', true );
             API.getPlaylistFromArtist( $searchInput.val(), function ( playlist ) {
+                cratedigger.startRender();
                 cratedigger.loadRecords( playlist );
                 DeezerPlayer.setTracksCollection( playlist );
                 setTimeout( function () {

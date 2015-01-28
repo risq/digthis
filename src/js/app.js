@@ -24,7 +24,9 @@ var App = (function() {
                 coverContainerId: 'cratedigger-record-cover'
             }
         });
-
+        
+        cratedigger.stopRender();
+        
         API.init();
         GUI.init();
         DeezerPlayer.init();

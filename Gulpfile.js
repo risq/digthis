@@ -66,7 +66,7 @@ gulp.task('less-dev', function() {
 
 gulp.task('js', function() {
   gulp.src(paths.js)
-    .pipe(plugins.concat('app.js'))
+    // .pipe(plugins.concat('app.js'))
     .pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest(paths.dist.js));
 });

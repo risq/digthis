@@ -31,7 +31,7 @@ var DeezerPlayer = ( function () {
         DZ.init( {
             appId: '146221',
             // channelUrl : 'http://risq.github.io/digthis/channel.html',
-            channelUrl: 'http://localhost:1337/channel.html',
+            channelUrl: 'http://risq.github.io/digthis/channel.html',
             player: {
                 // container : 'player',
                 // width: 400,

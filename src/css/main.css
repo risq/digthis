@@ -84,7 +84,7 @@ input:disabled {
   height: 100%;
   width: 100%;
   display: table;
-  padding-top: 96px;
+  padding-top: 144px;
   transition: all 0.6s ease-in-out;
   position: absolute;
   left: 0;
@@ -117,6 +117,7 @@ input:disabled {
 }
 #home .screen .screen-switch {
   text-align: center;
+  cursor: pointer;
 }
 #top-bar {
   position: absolute;
