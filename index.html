@@ -81,21 +81,20 @@
                         <div class="bar track-bar"></div>
                     </div>
                     <ul class="track-controls-buttons">
-                        <li class="track-control-button button-prev">
+                        <li class="track-control-button button-fullwidth button-prev">
                             Prev
                         </li>
-                        <li class="track-control-button button-playpause">
+                        <li class="track-control-button button-fullwidth button-playpause">
                             Play
                         </li>
-                        <li class="track-control-button button-next">
+                        <li class="track-control-button button-fullwidth button-next">
                             Next
                         </li>
                     </ul>
                 </div>
                 <div class="track-buttons">
                     <div class="column-container">
-                        <a href="#" id="deezer-login-button" class="button button-black">Deezer Login</a>
-                        <a href="#" id="dig-artist-button" class="button button-black">Dig this artist</a>
+                        <a href="#" id="dig-artist-button" class="button button-fullwidth button-black">Dig this artist</a>
                     </div>
                     <div class="column-container">
                         <div class="column">
@@ -118,12 +117,15 @@
                 <div class="home-container">
                     <div class="pictos-container">
                         <div class="picto left">
+                            <h2 class="fat-label small">lorem ipsum dolor</h2>
                             <img src="img/picto.png" width="148" height="148" alt="Dig This picto"/>
                         </div>
                         <div class="picto right">
+                            <h2 class="fat-label small">sit amet, consectetur adipisicing elit</h2>
                             <img src="img/picto.png" width="148" height="148" alt="Dig This Logo"/>
                         </div>
                         <div class="picto center">
+                            <h2 class="fat-label small">sed do eiusmod tempor</h2>
                             <img src="img/picto.png" width="148" height="148" alt="Dig This Logo"/>
                         </div>
                     </div>
@@ -178,8 +180,16 @@
             </section>
             <section>
                 <div class="home-container">
+                    <div class="deezer-login-container">
+                        <a href="#" id="deezer-login-button" class="button button-inversed button-small">Login to Deezer</a>
+                        <span class="button-label button-label-small">to play full length tracks</span>
+                    </div>
+                </div>
+            </section><section>
+                <div class="home-container">
                     <div class="screen-switch">
-                        <h2 class="fat-label">More infos</h2>
+                        <h2 class="fat-label no-margin">More infos</h2>
+                        <i class="fa fa-caret-down direction-icon"></i>
                     </div>
                 </div>
             </section>
@@ -187,71 +197,54 @@
         <div class="screen bottom">
             <section>
                 <div class="home-container">
-                    <div class="pictos-container">
-                        <div class="picto left">
-                            <img src="img/picto.png" width="148" height="148" alt="Dig This picto"/>
-                        </div>
-                        <div class="picto right">
-                            <img src="img/picto.png" width="148" height="148" alt="Dig This Logo"/>
-                        </div>
-                        <div class="picto center">
-                            <img src="img/picto.png" width="148" height="148" alt="Dig This Logo"/>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div class="home-container">
-                    <div class="artist-search">
-                        <h2 class="fat-label">Enter a seed artist :</h2>
-                        <input type="text" id="home-input" placeholder="Artist or band"></input>
-                    </div>
-                    <div class="artist-select">
-                        <h2 class="fat-label">Or choose one of the following :</h2>
-                        <div class="artist-record-element">                    
-                            <img class="artist-record-cover" src="img/predefined/milesdavis.png" alt=""></img>
-                            <div class="artist-record-name-container">
-                                <div class="artist-record-name">Miles Davis</div>
-                            </div>
-                        </div>
-                        <div class="artist-record-element">                    
-                            <img class="artist-record-cover" src="img/predefined/atcq.png" alt=""></img>
-                            <div class="artist-record-name-container">
-                                <div class="artist-record-name">A Tribe Called Quest</div>
-                            </div>
-                        </div>
-                        <div class="artist-record-element">                    
-                            <img class="artist-record-cover" src="img/predefined/rollingstones.png" alt=""></img>
-                            <div class="artist-record-name-container">
-                                <div class="artist-record-name">Rolling Stones</div>
-                            </div>
-                        </div>
-                        <div class="artist-record-element">                    
-                            <img class="artist-record-cover" src="img/predefined/jamal.png" alt=""></img>
-                            <div class="artist-record-name-container">
-                                <div class="artist-record-name">Ahmad Jamal</div>
-                            </div>
-                        </div>
-                        <div class="artist-record-element">                    
-                            <img class="artist-record-cover" src="img/predefined/fugees.png" alt=""></img>
-                            <div class="artist-record-name-container">
-                                <div class="artist-record-name">Fugees</div>
-                            </div>
-                        </div>
-                        <div class="artist-record-element">                    
-                            <img class="artist-record-cover" src="img/predefined/nas.png" alt=""></img>
-                            <div class="artist-record-name-container">
-                                <div class="artist-record-name">Nas</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div class="home-container">
                     <div class="screen-switch">
-                        <h2 class="fat-label">More infos</h2>
+                        <i class="fa fa-caret-up direction-icon"></i>
+                        <h2 class="fat-label no-margin">Back to home</h2>
                     </div>
+                </div>
+            </section>
+            <section>
+                <div class="home-container">
+                    <div class="two-columns-container">
+                        <div class="col">
+                            <h2 class="fat-label">Dig This Beta</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur.</p>
+                        </div>
+
+                        <div class="col">
+                            <h2 class="fat-label">Dig This Beta</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="home-container">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </section>
         </div>
