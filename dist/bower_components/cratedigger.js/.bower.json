@@ -23,14 +23,14 @@
     "tween.js": "https://github.com/sole/tween.js.git",
     "stats.js": "r12",
     "classie": "~1.0.1",
-    "threejs": "r69",
+    "threejs": "r70",
     "dat-gui": "~0.5.0"
   },
-  "_release": "5750a4ee4c",
+  "_release": "215eaf41a0",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "5750a4ee4c64157f9fd117dd259922fea46aa867"
+    "commit": "215eaf41a0447d6ee9b3fac83a55a7314767a1b6"
   },
   "_source": "git://github.com/risq/cratedigger.js.git",
   "_target": "master",

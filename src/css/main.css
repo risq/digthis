@@ -148,10 +148,14 @@ input:disabled {
   padding: 24px;
   z-index: 30;
   box-sizing: border-box;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 #bottom-bar {
   position: absolute;
-  z-index: 10;
+  z-index: 8;
   background-color: rgba(17, 17, 17, 0.5);
   right: 0;
   bottom: 0;
@@ -569,6 +573,15 @@ input:disabled {
   background-color: #111111;
 }
 .button-black:hover {
+  color: #111111;
+  background-color: #e9eef2;
+}
+.button-main {
+  font-weight: 700;
+  color: #e9eef2;
+  background-color: #d23945;
+}
+.button-main:hover {
   color: #111111;
   background-color: #e9eef2;
 }
