@@ -16,9 +16,12 @@ var GUI = ( function () {
         $bottomBarNextButton,
         $home,
         $screenSwitch,
+        $switcher,
+        $switcherButton,
         $deezerLogin;
 
     function init() {
+
         $searchInput = $( '#home-input' );
         $artistSearchContainer = $( '#home' );
         $listenButton = $( '#cratedigger-record-listen' );
@@ -32,6 +35,10 @@ var GUI = ( function () {
         $screenSwitch = $( '.screen-switch' );
         $home = $( '#home' );
         $deezerLogin = $( '.deezer-login-container' );
+        $switcher = $( '.switcher' );
+        $switcherButton = $( '.switcher-button' );
+
+
         initEventListeners();
 
     }
@@ -46,6 +53,7 @@ var GUI = ( function () {
         $bottomBarMidButton.on( 'click', onBottomBarMidButtonClick );
         $bottomBarNextButton.on( 'click', onBottomBarNextButtonClick );
         $screenSwitch.on( 'click', onScreenSwitchClick );
+        $switcherButton.on( 'click', onSwitcherButtonClick );
     }
 
 
@@ -109,7 +117,11 @@ var GUI = ( function () {
     }
 
     function onScreenSwitchClick( e ) {
-        $home.toggleClass('bottom-screen-visible');
+        $home.toggleClass( 'bottom-screen-visible' );
+    }
+
+    function onSwitcherButtonClick( e ) {
+        $switcher.toggleClass( 'switched' );
     }
 
     function setTrackLiked() {

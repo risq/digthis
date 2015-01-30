@@ -14,9 +14,8 @@ p {
 input {
   display: block;
   margin: 0;
-  padding: 0 0 0.15em;
+  padding: 0;
   border: none;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   background-color: transparent;
   color: #e9eef2;
   text-overflow: ellipsis;
@@ -37,6 +36,8 @@ input:disabled {
   text-transform: uppercase;
   color: #e9eef2;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 28px;
   margin: 0 0 6px;
 }
@@ -103,6 +104,7 @@ input:disabled {
 }
 #home .screen section {
   display: table-row;
+  width: 100%;
 }
 #home .screen section .home-container {
   padding: 0 10%;
@@ -110,16 +112,82 @@ input:disabled {
   vertical-align: middle;
   position: relative;
 }
-#home .screen section .home-container .artist-search {
-  margin-bottom: 32px;
+#home .screen section .home-container .switcher {
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+  -webkit-perspective: 1000px;
+          perspective: 1000px;
 }
-#home .screen section .home-container .artist-search input {
-  transition: all 1s ease-in-out;
-  margin: auto;
+#home .screen section .home-container .switcher .switcher-screen {
+  position: absolute;
   width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transition: all 0.6s ease-in-out;
 }
-#home .screen section .home-container .artist-select {
+#home .screen section .home-container .switcher .switcher-screen.second-screen {
+  -webkit-transform: rotateX(180deg);
+          transform: rotateX(180deg);
+}
+#home .screen section .home-container .switcher .switcher-screen section {
+  transition: -webkit-transform 0.2s ease-in-out, opacity 0.4s ease-in-out, right 0.4s ease-in-out, left 0.4s ease-in-out;
+  transition: transform 0.2s ease-in-out, opacity 0.4s ease-in-out, right 0.4s ease-in-out, left 0.4s ease-in-out;
+  position: absolute;
+  opacity: 0;
+}
+#home .screen section .home-container .switcher .switcher-screen section.artist-search {
+  left: -50%;
+}
+#home .screen section .home-container .switcher .switcher-screen section.artist-search:after {
+  content: " ";
+  clear: both;
+}
+#home .screen section .home-container .switcher .switcher-screen section.artist-search hr {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.5s ease-in-out 0.1s;
+  margin: 0;
+  width: 0;
+}
+#home .screen section .home-container .switcher .switcher-screen section.artist-select {
   text-align: right;
+  right: -100%;
+  bottom: 0;
+}
+#home .screen section .home-container .switcher .switcher-screen section.artist-select .artist-record-element {
+  transition: -webkit-transform 1s ease-in-out;
+  transition: transform 1s ease-in-out;
+  -webkit-transform: rotateY(-90deg);
+          transform: rotateY(-90deg);
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.first-screen {
+  opacity: 0;
+  -webkit-transform: rotateX(-180deg);
+          transform: rotateX(-180deg);
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.second-screen {
+  -webkit-transform: rotateX(0);
+          transform: rotateX(0);
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.second-screen section {
+  opacity: 1;
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.second-screen section.artist-search {
+  left: 0;
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.second-screen section.artist-search hr {
+  width: 100%;
+  border: 2px solid #e9eef2;
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.second-screen section.artist-select {
+  right: 0;
+}
+#home .screen section .home-container .switcher.switched .switcher-screen.second-screen section.artist-select .artist-record-element {
+  -webkit-transform: rotateY(0);
+          transform: rotateY(0);
 }
 #home .screen .screen-switch {
   text-align: center;
@@ -277,7 +345,7 @@ input:disabled {
 }
 .track-controls .track-bar-container .bar.track-bar {
   z-index: 9;
-  background-color: #111111;
+  background-color: #d23945;
 }
 .track-controls ul.track-controls-buttons {
   display: table;
@@ -410,7 +478,7 @@ input:disabled {
 .artist-record-element {
   display: block;
   float: right;
-  margin-right: 12px;
+  margin: 0 12px 12px 0;
   width: 96px;
   text-align: center;
   position: relative;
@@ -419,6 +487,8 @@ input:disabled {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
   box-shadow: 0px 6px 28px -6px rgba(0, 0, 0, 0.8);
 }
 .artist-record-element:hover .artist-record-name-container {
@@ -469,6 +539,9 @@ input:disabled {
   float: right;
   width: 33%;
 }
+.pictos-container .picto img {
+  margin-top: 24px;
+}
 .button-label {
   text-transform: uppercase;
   color: #e9eef2;
@@ -483,22 +556,22 @@ input:disabled {
 }
 .button {
   display: inline-block;
-  padding: 6px 8px;
+  padding: 0 8px;
   text-decoration: none;
   color: #e9eef2;
-  height: 44px;
-  line-height: 32px;
+  line-height: 44px;
   background-color: #9fabb3;
   box-sizing: border-box;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 6px;
-  font-size: 20px;
+  font-size: 22px;
   transition: all 0.2s ease-in-out;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  box-shadow: 0px 5px 14px 0px rgba(0, 0, 0, 0.4);
 }
 .button:hover {
   color: #9fabb3;
@@ -508,10 +581,16 @@ input:disabled {
   width: 100%;
 }
 .button.button-small {
-  padding: 4px 6px;
+  padding: 0 6px;
   height: 32px;
-  line-height: 26px;
+  line-height: 32px;
   font-size: 16px;
+}
+.button.button-big {
+  padding: 0 16px;
+  height: 64px;
+  line-height: 64px;
+  font-size: 32px;
 }
 .round-button {
   width: 50px;
@@ -628,11 +707,19 @@ input:disabled {
   position: relative;
 }
 .two-columns-container .col {
-  padding: 0 24px;
   box-sizing: border-box;
   width: 50%;
   float: left;
 }
+.two-columns-container .col:first-child {
+  padding-right: 24px;
+}
+.two-columns-container .col:last-child {
+  padding-left: 24px;
+}
 .no-margin {
   margin: 0;
+}
+.center {
+  text-align: center;
 }

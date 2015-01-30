@@ -8,6 +8,7 @@ var App = (function() {
         $.ajaxSetup({ cache: false }); // debug
 
         cratedigger.init({
+            postprocessing: false,
             infoPanelOpened: function() {
                 GUI.hideBottomBar();
             },
