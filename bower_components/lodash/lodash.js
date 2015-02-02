@@ -1,6 +1,6 @@
 /**
  * @license
- * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern -o ./lodash.js`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
@@ -9,11 +9,11 @@
  */
 ;(function() {
 
-  /** Used as a safe reference for `undefined` in pre ES5 environments. */
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '3.0.0';
+  var VERSION = '3.0.1';
 
   /** Used to compose bitmasks for wrapper metadata. */
   var BIND_FLAG = 1,
@@ -440,11 +440,12 @@
       }
     }
     // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
-    // that causes it, under certain circumstances, to provide the same value
-    // for `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247.
+    // that causes it, under certain circumstances, to provide the same value for
+    // `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247
+    // for more details.
     //
     // This also ensures a stable sort in V8 and other engines.
-    // See https://code.google.com/p/v8/issues/detail?id=90.
+    // See https://code.google.com/p/v8/issues/detail?id=90 for more details.
     return object.index - other.index;
   }
 
@@ -664,7 +665,7 @@
     // Avoid issues with some ES3 environments that attempt to use values, named
     // after built-in constructors like `Object`, for the creation of literals.
     // ES5 clears this up by stating that literals must use built-in constructors.
-    // See http://es5.github.io/#x11.1.5.
+    // See https://es5.github.io/#x11.1.5 for more details.
     context = context ? _.defaults(root.Object(), context, _.pick(root, contextProps)) : root;
 
     /** Native constructor references. */
@@ -1059,11 +1060,14 @@
      * @returns {Object} Returns the new reversed `LazyWrapper` object.
      */
     function lazyReverse() {
-      var filtered = this.filtered,
-          result = filtered ? new LazyWrapper(this) : this.clone();
-
-      result.dir = this.dir * -1;
-      result.filtered = filtered;
+      if (this.filtered) {
+        var result = new LazyWrapper(this);
+        result.dir = -1;
+        result.filtered = true;
+      } else {
+        result = this.clone();
+        result.dir *= -1;
+      }
       return result;
     }
 
@@ -1082,12 +1086,12 @@
       }
       var dir = this.dir,
           isRight = dir < 0,
-          length = array.length,
-          view = getView(0, length, this.views),
+          view = getView(0, array.length, this.views),
           start = view.start,
           end = view.end,
+          length = end - start,
           dropCount = this.dropCount,
-          takeCount = nativeMin(end - start, this.takeCount - dropCount),
+          takeCount = nativeMin(length, this.takeCount - dropCount),
           index = isRight ? end : start - 1,
           iteratees = this.iteratees,
           iterLength = iteratees ? iteratees.length : 0,
@@ -1123,7 +1127,7 @@
           result[resIndex++] = value;
         }
       }
-      return isRight ? result.reverse() : result;
+      return result;
     }
 
     /*------------------------------------------------------------------------*/
@@ -1644,7 +1648,7 @@
       // Handle "_.property" and "_.matches" style callback shorthands.
       return type == 'object'
         ? baseMatches(func, !argCount)
-        : baseProperty(argCount ? baseToString(func) : func);
+        : baseProperty(func + '');
     }
 
     /**
@@ -2169,9 +2173,8 @@
       if (!isSameTag) {
         return false;
       }
-      // Assume cyclic structures are equal.
-      // The algorithm for detecting cyclic structures is adapted from ES 5.1
-      // section 15.12.3, abstract operation `JO` (http://es5.github.io/#x15.12.3).
+      // Assume cyclic values are equal.
+      // For more information on detecting circular references see https://es5.github.io/#JO.
       stackA || (stackA = []);
       stackB || (stackB = []);
 
@@ -2375,6 +2378,9 @@
             ? toPlainObject(value)
             : (isPlainObject(value) ? value : {});
         }
+        else {
+          isCommon = false;
+        }
       }
       // Add the source value to the stack of traversed objects and associate
       // it with its merged value.
@@ -2496,7 +2502,8 @@
       if (end < 0) {
         end += length;
       }
-      length = start > end ? 0 : (end - start);
+      length = start > end ? 0 : (end - start) >>> 0;
+      start >>>= 0;
 
       var result = Array(length);
       while (++index < length) {
@@ -2963,7 +2970,7 @@
             result = Ctor.apply(thisBinding, arguments);
 
         // Mimic the constructor's `return` behavior.
-        // See http://es5.github.io/#x13.2.2.
+        // See https://es5.github.io/#x13.2.2 for more details.
         return isObject(result) ? result : thisBinding;
       };
     }
@@ -3103,7 +3110,7 @@
         return '';
       }
       var padLength = length - strLength;
-      chars = chars == null ? ' ' : baseToString(chars);
+      chars = chars == null ? ' ' : (chars + '');
       return repeat(chars, ceil(padLength / chars.length)).slice(0, padLength);
     }
 
@@ -3294,9 +3301,9 @@
 
         case regexpTag:
         case stringTag:
-          // Coerce regexes to strings (http://es5.github.io/#x15.10.6.4) and
-          // treat strings primitives and string objects as equal.
-          return object == baseToString(other);
+          // Coerce regexes to strings and treat strings primitives and string
+          // objects as equal. See https://es5.github.io/#x15.10.6.4 for more details.
+          return object == (other + '');
       }
       return false;
     }
@@ -3769,7 +3776,8 @@
      *
      * **Note:** If this function becomes hot, i.e. is invoked a lot in a short
      * period of time, it will trip its breaker and transition to an identity function
-     * to avoid garbage collection pauses in V8. See https://code.google.com/p/v8/issues/detail?id=2070.
+     * to avoid garbage collection pauses in V8. See [V8 issue 2070](https://code.google.com/p/v8/issues/detail?id=2070)
+     * for more details.
      *
      * @private
      * @param {Function} func The function to associate metadata with.
@@ -5036,7 +5044,7 @@
 
     /**
      * This method is like `_.zip` except that it accepts an array of grouped
-     * elements and creates an array regrouping the elements to their pre `_.zip`
+     * elements and creates an array regrouping the elements to their pre-`_.zip`
      * configuration.
      *
      * @static
@@ -5089,7 +5097,7 @@
 
     /**
      * Creates an array that is the symmetric difference of the provided arrays.
-     * See [Wikipedia](http://en.wikipedia.org/wiki/Symmetric_difference) for
+     * See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
      * more details.
      *
      * @static
@@ -5313,6 +5321,9 @@
     function wrapperReverse() {
       var value = this.__wrapped__;
       if (value instanceof LazyWrapper) {
+        if (this.__actions__.length) {
+          value = new LazyWrapper(this);
+        }
         return new LodashWrapper(value.reverse());
       }
       return this.thru(function(value) {
@@ -5688,7 +5699,7 @@
      * @returns {Array|Object|string} Returns `collection`.
      * @example
      *
-     * _([1, 2, 3]).forEach(function(n) { console.log(n); });
+     * _([1, 2, 3]).forEach(function(n) { console.log(n); }).value();
      * // => logs each value from left to right and returns the array
      *
      * _.forEach({ 'one': 1, 'two': 2, 'three': 3 }, function(n, key) { console.log(n, key); });
@@ -6179,7 +6190,7 @@
 
     /**
      * Creates an array of shuffled values, using a version of the Fisher-Yates
-     * shuffle. See [Wikipedia](http://en.wikipedia.org/wiki/Fisher-Yates_shuffle)
+     * shuffle. See [Wikipedia](https://en.wikipedia.org/wiki/Fisher-Yates_shuffle)
      * for more details.
      *
      * @static
@@ -6497,7 +6508,7 @@
       if (guard && isIterateeCall(func, n, guard)) {
         n = null;
       }
-      n = n == null ? func.length : (+n || 0);
+      n = (func && n == null) ? func.length : nativeMax(+n || 0, 0);
       return createWrapper(func, ARY_FLAG, null, null, null, null, n);
     }
 
@@ -7104,7 +7115,7 @@
      * // => 'FRED'
      *
      * // modifying the result cache
-     * upperCase.cache.set('fred, 'BARNEY');
+     * upperCase.cache.set('fred', 'BARNEY');
      * upperCase('fred');
      * // => 'BARNEY'
      *
@@ -7764,7 +7775,7 @@
      */
     function isFunction(value) {
       // Avoid a Chakra JIT bug in compatibility modes of IE 11.
-      // See https://github.com/jashkenas/underscore/issues/1621.
+      // See https://github.com/jashkenas/underscore/issues/1621 for more details.
       return typeof value == 'function' || false;
     }
     // Fallback for environments that return incorrect `typeof` operator results.
@@ -7781,7 +7792,7 @@
      * Checks if `value` is the language type of `Object`.
      * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
      *
-     * **Note:** See the [ES5 spec](http://es5.github.io/#x8) for more details.
+     * **Note:** See the [ES5 spec](https://es5.github.io/#x8) for more details.
      *
      * @static
      * @memberOf _
@@ -7801,7 +7812,7 @@
      */
     function isObject(value) {
       // Avoid a V8 JIT bug in Chrome 19-20.
-      // See https://code.google.com/p/v8/issues/detail?id=2291.
+      // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
       var type = typeof value;
       return type == 'function' || (value && type == 'object') || false;
     }
@@ -7872,7 +7883,7 @@
      * Checks if `value` is `NaN`.
      *
      * **Note:** This method is not the same as native `isNaN` which returns `true`
-     * for `undefined` and other non-numeric values. See the [ES5 spec](http://es5.github.io/#x15.1.2.4)
+     * for `undefined` and other non-numeric values. See the [ES5 spec](https://es5.github.io/#x15.1.2.4)
      * for more details.
      *
      * @static
@@ -9038,7 +9049,7 @@
 
     /**
      * Converts `string` to camel case.
-     * See [Wikipedia](http://en.wikipedia.org/wiki/CamelCase) for more details.
+     * See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
      *
      * @static
      * @memberOf _
@@ -9081,7 +9092,7 @@
 
     /**
      * Deburrs `string` by converting latin-1 supplementary letters to basic latin letters.
-     * See [Wikipedia](http://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+     * See [Wikipedia](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
      * for more details.
      *
      * @static
@@ -9134,18 +9145,18 @@
      * their corresponding HTML entities.
      *
      * **Note:** No other characters are escaped. To escape additional characters
-     * use a third-party library like [_he_](http://mths.be/he).
+     * use a third-party library like [_he_](https://mths.be/he).
      *
      * Though the ">" character is escaped for symmetry, characters like
      * ">" and "/" don't require escaping in HTML and have no special meaning
      * unless they're part of a tag or unquoted attribute value.
-     * See [Mathias Bynens's article](http://mathiasbynens.be/notes/ambiguous-ampersands)
+     * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
      * (under "semi-related fun fact") for more details.
      *
      * Backticks are escaped because in Internet Explorer < 9, they can break out
-     * of attribute values or HTML comments. See [#102](http://html5sec.org/#102),
-     * [#108](http://html5sec.org/#108), and [#133](http://html5sec.org/#133) of
-     * the [HTML5 Security Cheatsheet](http://html5sec.org/) for more details.
+     * of attribute values or HTML comments. See [#102](https://html5sec.org/#102),
+     * [#108](https://html5sec.org/#108), and [#133](https://html5sec.org/#133) of
+     * the [HTML5 Security Cheatsheet](https://html5sec.org/) for more details.
      *
      * When working with HTML you should always quote attribute values to reduce
      * XSS vectors. See [Ryan Grove's article](http://wonko.com/post/html-escaping)
@@ -9192,7 +9203,7 @@
 
     /**
      * Converts `string` to kebab case (a.k.a. spinal case).
-     * See [Wikipedia](http://en.wikipedia.org/wiki/Letter_case#Computers) for
+     * See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for
      * more details.
      *
      * @static
@@ -9316,7 +9327,7 @@
      * in which case a `radix` of `16` is used.
      *
      * **Note:** This method aligns with the ES5 implementation of `parseInt`.
-     * See the [ES5 spec](http://es5.github.io/#E) for more details.
+     * See the [ES5 spec](https://es5.github.io/#E) for more details.
      *
      * @static
      * @memberOf _
@@ -9342,9 +9353,9 @@
     // Fallback for environments with pre-ES5 implementations.
     if (nativeParseInt(whitespace + '08') != 8) {
       parseInt = function(string, radix, guard) {
-        // Firefox < 21 and Opera < 15 follow ES3 for `parseInt` and
+        // Firefox < 21 and Opera < 15 follow ES3 for `parseInt`.
         // Chrome fails to trim leading <BOM> whitespace characters.
-        // See https://code.google.com/p/v8/issues/detail?id=3109.
+        // See https://code.google.com/p/v8/issues/detail?id=3109 for more details.
         if (guard ? isIterateeCall(string, radix, guard) : radix == null) {
           radix = 0;
         } else if (radix) {
@@ -9383,7 +9394,7 @@
         return result;
       }
       // Leverage the exponentiation by squaring algorithm for a faster repeat.
-      // See http://en.wikipedia.org/wiki/Exponentiation_by_squaring.
+      // See https://en.wikipedia.org/wiki/Exponentiation_by_squaring for more details.
       do {
         if (n % 2) {
           result += string;
@@ -9397,7 +9408,7 @@
 
     /**
      * Converts `string` to snake case.
-     * See [Wikipedia](http://en.wikipedia.org/wiki/Snake_case) for more details.
+     * See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
      *
      * @static
      * @memberOf _
@@ -9572,7 +9583,6 @@
       , 'g');
 
       // Use a sourceURL for easier debugging.
-      // See http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl.
       var sourceURL = '//# sourceURL=' +
         ('sourceURL' in options
           ? options.sourceURL
@@ -9833,7 +9843,7 @@
      * corresponding characters.
      *
      * **Note:** No other HTML entities are unescaped. To unescape additional HTML
-     * entities use a third-party library like [_he_](http://mths.be/he).
+     * entities use a third-party library like [_he_](https://mths.be/he).
      *
      * @static
      * @memberOf _
@@ -10233,7 +10243,7 @@
         end = +end || 0;
       }
       // Use `Array(length)` so engines like Chakra and V8 avoid slower modes.
-      // See http://youtu.be/XAqIpGU8ZZk#t=17m25s.
+      // See https://youtu.be/XAqIpGU8ZZk#t=17m25s for more details.
       var index = -1,
           length = nativeMax(ceil((end - start) / (step || 1)), 0),
           result = Array(length);
@@ -10677,7 +10687,8 @@
 
     // Add `LazyWrapper` methods to `lodash.prototype`.
     baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-      var retUnwrapped = /^(?:first|last)$/.test(methodName);
+      var lodashFunc = lodash[methodName],
+          retUnwrapped = /^(?:first|last)$/.test(methodName);
 
       lodash.prototype[methodName] = function() {
         var value = this.__wrapped__,
@@ -10690,12 +10701,12 @@
         if (retUnwrapped && !chainAll) {
           return onlyLazy
             ? func.call(value)
-            : lodash[methodName](this.value());
+            : lodashFunc.call(lodash, this.value());
         }
         var interceptor = function(value) {
           var otherArgs = [value];
           push.apply(otherArgs, args);
-          return lodash[methodName].apply(lodash, otherArgs);
+          return lodashFunc.apply(lodash, otherArgs);
         };
         if (isLazy || isArray(value)) {
           var wrapper = onlyLazy ? value : new LazyWrapper(this),
@@ -10757,7 +10768,8 @@
   if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
     // Expose lodash to the global object when an AMD loader is present to avoid
     // errors in cases where lodash is loaded by a script tag and not intended
-    // as an AMD module. See http://requirejs.org/docs/errors.html#mismatch.
+    // as an AMD module. See http://requirejs.org/docs/errors.html#mismatch for
+    // more details.
     root._ = _;
 
     // Define as an anonymous module so, through path mapping, it can be
